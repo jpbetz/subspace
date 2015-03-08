@@ -1,4 +1,4 @@
-package subspace.math
+package com.github.jpbetz.subspace
 
 object Floats {
   def clamp(value: Float, min: Float, max: Float): Float = {

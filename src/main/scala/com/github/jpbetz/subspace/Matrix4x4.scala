@@ -1,4 +1,4 @@
-package subspace.math
+package com.github.jpbetz.subspace
 
 import java.nio.FloatBuffer
 
@@ -23,8 +23,7 @@ object Matrix4x4 {
       fov * (height / width), 0, 0, 0,
       0, fov, 0, 0,
       0, 0, (far + near) / (near - far), -1,
-      0, 0, (2 * far * near) / (near - far), 1
-    )
+      0, 0, (2 * far * near) / (near - far), 1)
   }
 
   def forOrtho(left: Float, right: Float, top: Float, bottom: Float, near: Float, far: Float): Matrix4x4 = {
@@ -40,8 +39,7 @@ object Matrix4x4 {
       2/w, 0,   0,    0,
       0,   2/h, 0,    0,
       0,   0,   -2/p, 0,
-      -x,  -y,  -z,   1
-    )
+      -x,  -y,  -z,   1)
   }
 
   def forRotation(q: Quaternion) = {
@@ -66,18 +64,16 @@ object Matrix4x4 {
       1 - ( yy + zz ), xy + wz, xz - wy, 0,
       xy - wz, 1 - ( xx + zz ), yz + wx, 0,
       xz + wy, yz - wx, 1 - ( xx + yy ), 0,
-      0, 0, 0, 1
-    )
+      0, 0, 0, 1)
   }
 
   def forTranslation(translation: Vector3): Matrix4x4 = {
+    // m[column][row]
     Matrix4x4(
       1, 0, 0, 0,
       0, 1, 0, 0,
       0, 0, 1, 0,
-      translation.x, translation.y, translation.z, 1
-    )
-
+      translation.x, translation.y, translation.z, 1)
   }
 
   def forScale(scale: Vector3): Matrix4x4 = {
@@ -87,17 +83,13 @@ object Matrix4x4 {
       0, 0, scale.z, 0,
       0, 0, 0, 0)
   }
-
-  def forTranslationRotationScale(translation: Vector3, rotation: Quaternion, scale: Vector3): Matrix4x4 = {
-    val translationMatrix = Matrix4x4.forTranslation(translation)
-    val rotationMatrix = Matrix4x4.forRotation(rotation)
-    val scaleMatrix = Matrix4x4.forScale(scale)
-    translationMatrix * rotationMatrix * scaleMatrix
-  }
 }
 
-// Use fields so we can stack allocate the matrix
-// form is m<column><row>
+/**
+ * Constructor takes values in column major order.  That is,  the first 4 values are the rows the first column.
+ */
+// Originally the matrix cells were put into fields in anticipation of making this all stack allocated (using AnyVal
+// or similar).  That's not currently possible,  so this could potentiall be transitioned to a simple Float array.
 case class Matrix4x4(
     m00: Float, m01: Float, m02: Float, m03: Float,
     m10: Float, m11: Float, m12: Float, m13: Float,
@@ -156,11 +148,19 @@ case class Matrix4x4(
   def *(m: Matrix4x4): Matrix4x4 = multiply(m)
   def multiply(m: Matrix4x4): Matrix4x4 = {
     Matrix4x4(
-      m00 * m.m00 + m01 * m.m10 + m02 * m.m20 + m03 * m.m30,  m00 * m.m01 + m01 * m.m11 + m02 * m.m21 + m03 * m31,  m00 * m.m02 + m01 * m.m12 + m02 * m.m22 + m03 * m.m32, m00 * m.m03 + m01 * m.m13 + m02 * m.m23 + m03 * m.m33,
-      m10 * m.m00 + m11 * m.m10 + m12 * m.m20 + m13 * m.m30,  m10 * m.m01 + m11 * m.m11 + m12 * m.m21 + m13 * m31,  m10 * m.m02 + m11 * m.m12 + m12 * m.m22 + m13 * m.m32, m10 * m.m03 + m11 * m.m13 + m12 * m.m23 + m13 * m.m33,
-      m20 * m.m00 + m21 * m.m10 + m22 * m.m20 + m23 * m.m30,  m20 * m.m01 + m21 * m.m11 + m22 * m.m21 + m23 * m31,  m20 * m.m02 + m21 * m.m12 + m22 * m.m22 + m23 * m.m32, m20 * m.m03 + m21 * m.m13 + m22 * m.m23 + m23 * m.m33,
-      m30 * m.m00 + m31 * m.m10 + m32 * m.m20 + m33 * m.m30,  m30 * m.m01 + m31 * m.m11 + m32 * m.m21 + m33 * m31,  m30 * m.m02 + m31 * m.m12 + m32 * m.m22 + m33 * m.m32, m30 * m.m03 + m31 * m.m13 + m32 * m.m23 + m33 * m.m33
-    )
+      // m[column][row]
+      m00 * m.m00 + m10 * m.m01 + m20 * m.m02 + m30 * m.m03,  m01 * m.m00 + m11 * m.m01 + m21 * m.m02 + m31 * m.m03,  m02 * m.m00 + m12 * m.m01 + m22 * m.m02 + m32 * m.m03,  m03 * m.m00 + m13 * m.m01 + m23 * m.m02 + m33 * m.m03,
+      m00 * m.m10 + m10 * m.m11 + m20 * m.m12 + m30 * m.m13,  m01 * m.m10 + m11 * m.m11 + m21 * m.m12 + m31 * m.m13,  m02 * m.m10 + m12 * m.m11 + m22 * m.m12 + m32 * m.m13,  m03 * m.m10 + m13 * m.m11 + m23 * m.m12 + m33 * m.m13,
+      m00 * m.m20 + m10 * m.m21 + m20 * m.m22 + m30 * m.m23,  m01 * m.m20 + m11 * m.m21 + m21 * m.m22 + m31 * m.m23,  m02 * m.m20 + m12 * m.m21 + m22 * m.m22 + m32 * m.m23,  m03 * m.m20 + m13 * m.m21 + m23 * m.m22 + m33 * m.m23,
+      m00 * m.m30 + m10 * m.m31 + m20 * m.m32 + m30 * m.m33,  m01 * m.m30 + m11 * m.m31 + m21 * m.m32 + m31 * m.m33,  m02 * m.m30 + m12 * m.m31 + m22 * m.m32 + m32 * m.m33,  m03 * m.m30 + m13 * m.m31 + m23 * m.m32 + m33 * m.m33)
+
+      // m[row][column]
+      /*
+      m00 * m.m00 + m01 * m.m10 + m02 * m.m20 + m03 * m.m30,  m00 * m.m01 + m01 * m.m11 + m02 * m.m21 + m03 * m.m31,  m00 * m.m02 + m01 * m.m12 + m02 * m.m22 + m03 * m.m32, m00 * m.m03 + m01 * m.m13 + m02 * m.m23 + m03 * m.m33,
+      m10 * m.m00 + m11 * m.m10 + m12 * m.m20 + m13 * m.m30,  m10 * m.m01 + m11 * m.m11 + m12 * m.m21 + m13 * m.m31,  m10 * m.m02 + m11 * m.m12 + m12 * m.m22 + m13 * m.m32, m10 * m.m03 + m11 * m.m13 + m12 * m.m23 + m13 * m.m33,
+      m20 * m.m00 + m21 * m.m10 + m22 * m.m20 + m23 * m.m30,  m20 * m.m01 + m21 * m.m11 + m22 * m.m21 + m23 * m.m31,  m20 * m.m02 + m21 * m.m12 + m22 * m.m22 + m23 * m.m32, m20 * m.m03 + m21 * m.m13 + m22 * m.m23 + m23 * m.m33,
+      m30 * m.m00 + m31 * m.m10 + m32 * m.m20 + m33 * m.m30,  m30 * m.m01 + m31 * m.m11 + m32 * m.m21 + m33 * m.m31,  m30 * m.m02 + m31 * m.m12 + m32 * m.m22 + m33 * m.m32, m30 * m.m03 + m31 * m.m13 + m32 * m.m23 + m33 * m.m33)
+      */
   }
 
   // TODO: needed?  Can always convert axis angle to Quaternion and then rotate...
@@ -197,15 +197,15 @@ case class Matrix4x4(
 
 
   def translate(translation: Vector3): Matrix4x4 = {
-    Matrix4x4.forTranslation(translation) * this
+    this * Matrix4x4.forTranslation(translation)
   }
 
   def scale(scale: Vector3): Matrix4x4 = {
-    Matrix4x4.forScale(scale) * this
+    this * Matrix4x4.forScale(scale)
   }
 
   def rotate(rotation: Quaternion): Matrix4x4 = {
-    Matrix4x4.forRotation(rotation) * this
+    this * Matrix4x4.forRotation(rotation)
   }
 
   /**
@@ -218,10 +218,17 @@ case class Matrix4x4(
    */
   def multiply(vec: Vector4): Vector4 = {
     Vector4(
-      m00 * vec.x + m01 * vec.y + m02 * vec.z + m03 * vec.w,
+      // m[column][row]
+      m00 * vec.x + m10 * vec.y + m20 * vec.z + m30 * vec.w,
+      m01 * vec.x + m11 * vec.y + m21 * vec.z + m31 * vec.w,
+      m02 * vec.x + m12 * vec.y + m22 * vec.z + m32 * vec.w,
+      m03 * vec.x + m13 * vec.y + m23 * vec.z + m33 * vec.w
+
+      // m[row][column]
+      /*m00 * vec.x + m01 * vec.y + m02 * vec.z + m03 * vec.w,
       m10 * vec.x + m11 * vec.y + m12 * vec.z + m13 * vec.w,
       m20 * vec.x + m21 * vec.y + m22 * vec.z + m23 * vec.w,
-      m30 * vec.x + m31 * vec.y + m32 * vec.z + m33 * vec.w
+      m30 * vec.x + m31 * vec.y + m32 * vec.z + m33 * vec.w*/
     )
   }
 
@@ -289,8 +296,7 @@ case class Matrix4x4(
       x.x, x.y, x.z, 0,
       y.x, y.y, y.z, 0,
       z.x, z.y, z.z, 0,
-      0, 0, 0, 0
-    )
+      0, 0, 0, 0)
   }
 
   // conversions
@@ -333,5 +339,13 @@ case class Matrix4x4(
       .put(m20).put(m21).put(m22).put(m23)
       .put(m30).put(m31).put(m32).put(m33)
     buffer.flip()
+  }
+
+  override def toString: String = {
+    s"""[[$m00, $m01, $m02, $m03]
+       | [$m10, $m11, $m12, $m13]
+       | [$m20, $m21, $m22, $m23]
+       | [$m30, $m31, $m32, $m33]]
+     """.stripMargin
   }
 }

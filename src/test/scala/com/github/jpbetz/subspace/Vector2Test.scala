@@ -1,4 +1,4 @@
-package subspace.math
+package com.github.jpbetz.subspace
 
 import org.testng.Assert._
 import org.testng.annotations.Test

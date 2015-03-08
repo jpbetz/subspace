@@ -22,7 +22,7 @@ Usage
 All vector classes are case classes with companion objects that provide additional functions and constructors.
 
 ```scala
-val modelPosition = Vector3(0, 0, 1)
+val position = Vector3(0, 0, 1)
 val origin = Vector3.zero
 ```
 
@@ -32,9 +32,8 @@ Mathematical operators can be used operations that make sense mathematically:
 val translated = modelPosition + Vector3(0.1, 0, 0)
 ```
 
-All operators have an equivalent method:
-
-* `modelPosition + Vector3(0.1, 0, 0)` == `modelPosition.add(Vector3(0.1, 0, 0))`
+All operators have an equivalent method.  `modelPosition + Vector3(0.1, 0, 0)` can also be written as
+`modelPosition.add(Vector3(0.1, 0, 0))`.
 
 Where mathematical operators cannot be overloaded in a clear and unambiguous way, the operator is not
 overloaded.  For example,  to multiply a vector with a scalar use: `vec3 * 3.0f`,  but to compute the product of two
@@ -44,7 +43,7 @@ vectors,  `*` is not available pick from: `v1.dotProduct(v2)`, `v1.crossProduct(
 Vector classes also contain a variety of convenience methods, e.g.:
 
 * `v1.distanceTo(v1)`
-* `v1.lerp(v2, 0.5)` - Linear interpolation
+* `v1.lerp(v2, 0.5)`
 
 *Matrix classes:*
 
@@ -52,12 +51,11 @@ Matrices are usually constructed using the convenience methods on the companion 
 
 ```scala
 val perspectiveMatrix = Matrix4x4.forPerspective(scala.math.Pi.toFloat/2f, 1f, 1f, zNear, zFar)
-...
 val worldToViewMatrix = Matrix4x4.forRotation(cameraRotation)
 val modelToWorldMatrix = Matrix4x4.forTranslationRotationScale(modelPosition, modelRotation, Vector3.one)
 ```
 
-Matrices can be composed using matrix multiplication:
+Matrices can be combined using matrix multiplication:
 
 ```scala
 val modelViewMatrix = modelToWorldMatrix * worldToViewMatrix

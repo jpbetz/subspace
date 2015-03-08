@@ -1,4 +1,4 @@
-package subspace.math
+package com.github.jpbetz.subspace
 
 import java.nio.{ByteBuffer, ByteOrder, FloatBuffer}
 

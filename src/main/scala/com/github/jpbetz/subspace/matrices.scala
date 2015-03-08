@@ -1,4 +1,4 @@
-package subspace.math
+package com.github.jpbetz.subspace
 
 trait Matrix {
   def rowCount: Int
