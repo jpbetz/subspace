@@ -111,6 +111,7 @@ TODO
 * [ ] Implement projection/reflection convenience methods on Vector3
 * [ ] Flesh out scaladoc
 * [ ] Add Color and UV coordinate related conveniences.  Might be as simple as adding swizzle operators (rgba, stpq) to Vector3 and Vector4.
+* [ ] Publish to maven central
 
 References
 ----------
