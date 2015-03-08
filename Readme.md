@@ -72,6 +72,7 @@ Non-goals:
 
 Current Limitations
 -------------------
+
 * All types are currently reference types.  This has negative performance implications.  While scala does allow
   stack allocated value types to be defined by extending AnyVal,  AnyVal can only be used for single field types, not
   multi field types like Vector2.  It is not clear if Scala will ever support stack allocated value types that could
@@ -80,6 +81,7 @@ Current Limitations
 
 TODO
 ----
+
 [ ] Finish up test suite
 [ ] Implement projection/reflection convenience methods on Vector3
 [ ] Flesh out scaladoc
@@ -87,6 +89,7 @@ TODO
 
 References
 ----------
+
 * http://glm.g-truc.net/0.9.6/index.html
 * https://github.com/ra4king/LWJGL-OpenGL-Utils/tree/master/src/com/ra4king/opengl/util/math
 * http://developer.android.com/reference/android/opengl/Matrix.html
