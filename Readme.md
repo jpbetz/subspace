@@ -5,41 +5,54 @@ Lightweight vector and matrix math library for OpenGL programming in Scala.
 
 For more details, see: http://jpbetz.github.io/subspace/
 
-Inspired by [glm](http://glm.g-truc.net/0.9.6/index.html) Subspace makes the vector and matrix computations that needs
-to be performed on the CPU a bit easier by providing features that graphics programmers are familiar with from shader
-programming (like swizzle operators) as well as a complete set of functions for graphics programming,  including
-functions that have been deprecated by OpenGL such as `glRotate`, `gluPerspective` and `gluLookAt`.
-
-This contains core classes such as Vector3, Matrix4x4 and Quaternion.  It also
-provides [swizzling](https://www.opengl.org/wiki/Data_Type_%28GLSL%29#Swizzling) and
-[convenience constructors](https://www.opengl.org/wiki/Data_Type_%28GLSL%29#Vector_constructors).
+Inspired by [glm](http://glm.g-truc.net/0.9.6/index.html), Subspace makes the vector and matrix computations that needs
+to be performed on the CPU a bit easier.  It provides convenience features from shader programming like
+[swizzle operators](https://www.opengl.org/wiki/Data_Type_%28GLSL%29#Swizzling) as well as a comprehensive set of
+operations for graphics programming,  including functions that have been deprecated by OpenGL such as `glRotate`,
+`gluPerspective` and `gluLookAt`.
 
 To minimize it's footprint, this library has no dependencies.  Is intended for use with OpenGL, via bindings such as
-LWJGL.
+[LWJGL](http://www.lwjgl.org/).
 
 Usage
 -----
 
 Vector classes:
 
+All vector classes are case classes with companion objects that provide additional functions and constructors.
+
 ```scala
 val modelPosition = Vector3(0, 0, 1)
-modelPosition.rotate(Orientation.y, scala.math.Pi.toFloat/2)
+val origin = Vector3.zero
+```
+
+Mathematical operators can be used operations that make sense mathematically:
+
+```scala
+val translated = modelPosition + Vector3(0.1, 0, 0)
 ```
 
 Matrix classes:
+
+Matrices are usually constructed using the convenience methods on the companion object.
 
 ```scala
 val perspectiveMatrix = Matrix4x4.forPerspective(scala.math.Pi.toFloat/2f, 1f, 1f, zNear, zFar)
 ...
 val worldToViewMatrix = Matrix4x4.forRotation(cameraRotation)
-val modelToWorldMatrix = Matrix4x4.forTranslation(modelPosition)
-...
+val modelToWorldMatrix = Matrix4x4.forTranslationRotationScale(modelPosition, modelRotation, Vector3.one)
+```
+
+Matrices can be composed using matrix multiplication:
+
+```scala
 val modelViewMatrix = modelToWorldMatrix * worldToViewMatrix
 val normalViewMatrix = modelViewMatrix.normalMatrix
 ```
 
-Quaternion:
+Quaternion class:
+
+For gimbal lock free rotations,  quaternions can be used.
 
 ```scala
 val quat = Quaternion.fromAxisAngle(Orientation.x, scala.math.Pi.toFloat/4)
@@ -47,18 +60,20 @@ Matrix4x4.forRotation(quat) * Vector3(1, 1, 1)
 Vector3(1, 1, 1).rotate(quat)
 ```
 
-Swizzle operators and vector convenience constructors work the same as in GLSL.  E.g.:
+Swizzle operators work the same as in GLSL:
 
-```scala
-Vector4(0, vec2.yx, 0) // == Vector4(0, vec2.y, vec2.x, 0)
-vec4.xz // == Vector2(vec4.x, vec4.z)
-```
+* `vec3.zxy` == `Vector3(vec3.z, vec3.y, vec3.z)`
+* `vec4.xz` == `Vector2(vec4.x, vec4.z)`
+* `vec4.yyy` == `Vector3(vec4.y, vec4.y, vec4.y)`
 
-Implementations of functions deprecated from OpenGL:
+Vectors can be constructed from other vectors.  Similar to GLSL constructors:
 
-```scala
-val perspectiveMatrix = Matrix4x4.forPerspective(...)
-```
+* `Vector4(vec3, 0)` == `Vector4(vec3.x, vec3.y, vec3.z, 0)`
+* `Vector4(1, vec2, 0)` == `Vector4(1, vec2.x, vec2.y, 0)`
+
+Constructors and swizzle operators can be used together to reshape and resize vectors:
+
+* `Vector4(0, vec2.yx, 0)` == `Vector4(0, vec2.y, vec2.x, 0)`
 
 ByteBuffer writers to ease integration with low level OpenGL APIs for the JVM such as LWJGL
 

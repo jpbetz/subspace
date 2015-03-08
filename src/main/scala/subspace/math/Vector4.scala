@@ -12,6 +12,7 @@ object Vector4 {
   def apply(xy: Vector2, z: Float, w: Float): Vector4 = Vector4(xy(0), xy(1), z, w)
   def apply(x: Float, yz: Vector2, w: Float): Vector4 = Vector4(x, yz(0), yz(1), w)
   def apply(x: Float, y: Float, zw: Vector2): Vector4 = Vector4(x, y, zw(0), zw(1))
+  def apply(xy: Vector2, zw: Vector2): Vector4 = Vector4(xy(0), xy(1), zw(0), zw(1))
 }
 
 case class Vector4(
