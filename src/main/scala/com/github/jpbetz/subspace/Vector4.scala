@@ -109,7 +109,7 @@ case class Vector4(
     s"($x, $y, $z, $w)"
   }
 
-  // swizzling
+  // fizzle my swizzle
   def xx = Vector2(x, x)
   def xy = Vector2(x, y)
   def xz = Vector2(x, z)
@@ -190,7 +190,7 @@ case class Vector4(
   def wzz = Vector3(w, z, z)
   def wzw = Vector3(w, z, w)
 
-  // TODO: swizzlers for vec4?  So many..  Maybe there is a better way to swizzle in scala?
+  // TODO: swizzle operators for vec4?  So many..  Maybe there is a better way to implement swizzle operators in scala?
 
   def allocateBuffer: FloatBuffer = {
     val direct = Buffers.createFloatBuffer(4)

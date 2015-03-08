@@ -3,9 +3,7 @@ package com.github.jpbetz.subspace
 import org.testng.Assert._
 import org.testng.annotations.Test
 
-class Vector2Test {
-
-  private val thousandths = 0.001f
+class Vector2Test extends Asserts {
 
   // TODO: How to handle divide by zero?  Scala x/0f results in Infinity.
 
@@ -15,27 +13,24 @@ class Vector2Test {
     assertEquals(Vector2(1, 0).magnitude, 1f)
     assertEquals(Vector2(0, -1).magnitude, 1f)
     assertEquals(Vector2(-1, 0).magnitude, 1f)
-    assertEquals(Vector2(1, 1).magnitude, 1.414f, thousandths)
-    assertEquals(Vector2(-1, -1).magnitude, 1.414f, thousandths)
+    assertFloat(Vector2(1, 1).magnitude, 1.414f)
+    assertFloat(Vector2(-1, -1).magnitude, 1.414f)
   }
 
   @Test def testNormalize(): Unit = {
-    // TODO: ???
-    //assertEquals(Vector2(0, 0).normalize, Vector2(Float.NaN, Float.NaN))
-
     assertEquals(Vector2(2, 0).normalize, Vector2(1, 0))
     assertEquals(Vector2(0, 2).normalize, Vector2(0, 1))
 
     Seq(Vector2(2, 2), Vector2(-2, -2)) foreach { vec =>
       val normal = vec.normalize
       assertEquals(normal.x, normal.y)
-      assertEquals(normal.magnitude, 1f, thousandths)
+      assertFloat(normal.magnitude, 1f)
     }
   }
 
   @Test def testDotProduct(): Unit = {
-    assertEquals(Vector2(0, 0).dotProduct(Vector2(0, 0)), 0f, thousandths)
-    assertEquals(Vector2(2, 4).dotProduct(Vector2(3, 5)), 26f, thousandths)
+    assertFloat(Vector2(0, 0).dotProduct(Vector2(0, 0)), 0f)
+    assertFloat(Vector2(2, 4).dotProduct(Vector2(3, 5)), 26f)
   }
 
   @Test def testArithmetic(): Unit = {
@@ -57,11 +52,11 @@ class Vector2Test {
   @Test def testDistanceTo(): Unit = {
     assertEquals(Vector2(0, 0).distanceTo(Vector2(0, 0)), 0f)
     assertEquals(Vector2(0, 0).distanceTo(Vector2(1, 0)), 1f)
-    assertEquals(Vector2(0, 0).distanceTo(Vector2(1, 1)), 1.414f, thousandths)
+    assertFloat(Vector2(0, 0).distanceTo(Vector2(1, 1)), 1.414f)
 
-    assertEquals(Vector2(0, 0).distanceTo(Vector2(1, 1)), 1.414f, thousandths)
-    assertEquals(Vector2(-0.5f, -0.5f).distanceTo(Vector2(0.5f, 0.5f)), 1.414f, thousandths)
-    assertEquals(Vector2(-0.5f, 0.5f).distanceTo(Vector2(0.5f, -0.5f)), 1.414f, thousandths)
+    assertFloat(Vector2(0, 0).distanceTo(Vector2(1, 1)), 1.414f)
+    assertFloat(Vector2(-0.5f, -0.5f).distanceTo(Vector2(0.5f, 0.5f)), 1.414f)
+    assertFloat(Vector2(-0.5f, 0.5f).distanceTo(Vector2(0.5f, -0.5f)), 1.414f)
   }
 
   @Test def testClamp(): Unit = {

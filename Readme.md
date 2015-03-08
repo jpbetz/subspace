@@ -37,7 +37,7 @@ All operators have an equivalent method.  `modelPosition + Vector3(0.1, 0, 0)` c
 
 Where mathematical operators cannot be overloaded in a clear and unambiguous way, the operator is not
 overloaded.  For example,  to multiply a vector with a scalar use: `vec3 * 3.0f`,  but to compute the product of two
-vectors,  `*` is not available pick from: `v1.dotProduct(v2)`, `v1.crossProduct(v2)` and `v1.scale(v2)`
+vectors,  `*` is not available.  Instead, pick from: `v1.dotProduct(v2)`, `v1.crossProduct(v2)` or `v1.scale(v2)`
 (component-wise multiplication).
 
 Vector classes also contain a variety of convenience methods, e.g.:
@@ -48,20 +48,16 @@ Vector classes also contain a variety of convenience methods, e.g.:
 *Matrix classes:*
 
 Matrices are usually constructed using the convenience methods on the companion object.
+And Matrices can be combined using matrix multiplication.
 
 ```scala
 val perspectiveMatrix = Matrix4x4.forPerspective(scala.math.Pi.toFloat/2f, 1f, 1f, zNear, zFar)
 val worldToViewMatrix = Matrix4x4.forRotation(cameraRotation)
-val modelToWorldMatrix = Matrix4x4.forTranslationRotationScale(modelPosition, modelRotation, Vector3.one)
-```
-
-Matrices can be combined using matrix multiplication:
-
-```scala
+val modelToWorldMatrix = Matrix4x4.forRotation(modelRotation) * Matrix4x4.forTranslation(modelRotation)
 val modelViewMatrix = modelToWorldMatrix * worldToViewMatrix
 ```
 
-And contain convenience methods for common operations:
+Matrices have convenience methods for common operations:
 
 ```scala
 val normalViewMatrix = modelViewMatrix.normalMatrix // same as modelViewMatrix.inverse.transpose
@@ -81,18 +77,18 @@ Vector3(1, 1, 1).rotate(quat)
 
 Swizzle operators work the same as in GLSL:
 
-* `vec3.zxy` == `Vector3(vec3.z, vec3.y, vec3.z)`
-* `vec4.xz` == `Vector2(vec4.x, vec4.z)`
-* `vec4.yyy` == `Vector3(vec4.y, vec4.y, vec4.y)`
+* `vec3.zxy` is equivalent to `Vector3(vec3.z, vec3.y, vec3.z)`
+* `vec4.xz` is equivalent to `Vector2(vec4.x, vec4.z)`
+* `vec4.yyy` is equivalent to `Vector3(vec4.y, vec4.y, vec4.y)`
 
 Vectors can be constructed from other vectors.  Similar to GLSL constructors:
 
-* `Vector4(vec3, 0)` == `Vector4(vec3.x, vec3.y, vec3.z, 0)`
-* `Vector4(1, vec2, 0)` == `Vector4(1, vec2.x, vec2.y, 0)`
+* `Vector4(vec3, 0)` is equivalent to `Vector4(vec3.x, vec3.y, vec3.z, 0)`
+* `Vector4(1, vec2, 0)` is equivalent to `Vector4(1, vec2.x, vec2.y, 0)`
 
 Constructors and swizzle operators can be used together to reshape and resize vectors:
 
-* `Vector4(0, vec2.yx, 0)` == `Vector4(0, vec2.y, vec2.x, 0)`
+* `Vector4(0, vec2.yx, 0)` is equivalent to `Vector4(0, vec2.y, vec2.x, 0)`
 
 *ByteBuffers:*
 
@@ -123,14 +119,13 @@ ByteBuffers needed by LWJGL.  E.g.:
     glUniformMatrix4("modelViewMatrix", false, modelViewMatrix.allocateBuffer)
 
 Design
------
+------
 
 Goals:
 
-* Provide the best features from the vector and matrix types in shader languages like GLSL.
-* Consistent and complete.  Similar libraries for other languages have been studied to make sure all the convenience operations developers expect have been included.
+* Be good at one thing.  Provide the vector and matrix types and operations to drive a GPU from the CPU, and nothing else.
+* Consistent and complete.  Shaders and libraries for other languages have been studied to make sure all the convenience operations developers expect have been included.
 * Scala idomatic. Immutable case classes for all vector and matrix types. Carefully defined operator overloading for natural looking mathematical expressions.
-* Be good at one thing.  Provide the vector and matrix types needed for to drive a GPU from the CPU, and nothing else.
 * Minimal footprint.  No dependencies.
 
 Non-goals:
@@ -152,6 +147,7 @@ TODO
 ----
 
 * [ ] Finish up test suite
+* [ ] Integrate with scala collection types (Product
 * [ ] Implement projection/reflection convenience methods on Vector3
 * [ ] Flesh out scaladoc
 * [ ] Add Color and UV coordinate related conveniences.  Might be as simple as adding swizzle operators (rgba, stpq) to Vector3 and Vector4.
