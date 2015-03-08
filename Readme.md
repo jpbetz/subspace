@@ -3,6 +3,8 @@ Subspace
 
 Lightweight vector and matrix math library for OpenGL programming in Scala.
 
+For more details, see: http://jpbetz.github.io/subspace/
+
 Inspired by [glm](http://glm.g-truc.net/0.9.6/index.html) Subspace makes the vector and matrix computations that needs
 to be performed on the CPU a bit easier by providing features that graphics programmers are familiar with from shader
 programming (like swizzle operators) as well as a complete set of functions for graphics programming,  including
