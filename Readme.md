@@ -82,10 +82,10 @@ Current Limitations
 TODO
 ----
 
-[ ] Finish up test suite
-[ ] Implement projection/reflection convenience methods on Vector3
-[ ] Flesh out scaladoc
-[ ] Add Color and UV coordinate related conveniences.  Might be as simple as adding swizzle operators (rgba, stpq) to Vector3 and Vector4.
+* [ ] Finish up test suite
+* [ ] Implement projection/reflection convenience methods on Vector3
+* [ ] Flesh out scaladoc
+* [ ] Add Color and UV coordinate related conveniences.  Might be as simple as adding swizzle operators (rgba, stpq) to Vector3 and Vector4.
 
 References
 ----------
