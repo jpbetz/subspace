@@ -15,27 +15,52 @@ provides [swizzling](https://www.opengl.org/wiki/Data_Type_%28GLSL%29#Swizzling)
 To minimize it's footprint, this library has no dependencies.  Is intended for use with OpenGL, via bindings such as
 LWJGL.
 
-Includes
---------
+Usage
+-----
 
-Vector and matrix classes:  Vector2, Vector3, Vector4, Matrix3x3, Matrix4x4, Quaternion
+Vector classes:
+
+```scala
+val modelPosition = Vector3(0, 0, 1)
+modelPosition.rotate(Orientation.y, scala.math.Pi.toFloat/2)
+```
+
+Matrix classes:
+
+```scala
+val perspectiveMatrix = Matrix4x4.forPerspective(scala.math.Pi.toFloat/2f, 1f, 1f, zNear, zFar)
+...
+val worldToViewMatrix = Matrix4x4.forRotation(cameraRotation)
+val modelToWorldMatrix = Matrix4x4.forTranslation(modelPosition)
+...
+val modelViewMatrix = modelToWorldMatrix * worldToViewMatrix
+val normalViewMatrix = modelViewMatrix.normalMatrix
+```
+
+Quaternion:
+
+```scala
+val quat = Quaternion.fromAxisAngle(Orientation.x, scala.math.Pi.toFloat/4)
+Matrix4x4.forRotation(quat) * Vector3(1, 1, 1)
+Vector3(1, 1, 1).rotate(quat)
+```
 
 Swizzle operators and vector convenience constructors work the same as in GLSL.  E.g.:
 
-```
-Vector4(0, vec2.yx, 0) == Vector4(0, vec2.y, vec2.x, 0)
-vec4.xz == Vector2(vec4.x, vec4.z)
+```scala
+Vector4(0, vec2.yx, 0) // == Vector4(0, vec2.y, vec2.x, 0)
+vec4.xz // == Vector2(vec4.x, vec4.z)
 ```
 
 Implementations of functions deprecated from OpenGL:
 
-```
+```scala
 val perspectiveMatrix = Matrix4x4.forPerspective(...)
 ```
 
 ByteBuffer writers to ease integration with low level OpenGL APIs for the JVM such as LWJGL
 
-```
+```scala
 val cameraPosition = Vector4(10, 10, 5, 0).allocateBuffer()
 ```
 
