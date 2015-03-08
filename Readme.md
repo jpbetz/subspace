@@ -17,7 +17,7 @@ To minimize it's footprint, this library has no dependencies.  Is intended for u
 Usage
 -----
 
-Vector classes:
+*Vector classes:*
 
 All vector classes are case classes with companion objects that provide additional functions and constructors.
 
@@ -32,7 +32,21 @@ Mathematical operators can be used operations that make sense mathematically:
 val translated = modelPosition + Vector3(0.1, 0, 0)
 ```
 
-Matrix classes:
+All operators have an equivalent method:
+
+* `modelPosition + Vector3(0.1, 0, 0)` == `modelPosition.add(Vector3(0.1, 0, 0))`
+
+Where mathematical operators cannot be overloaded in a clear and unambiguous way, the operator is not
+overloaded.  For example,  to multiply a vector with a scalar use: `vec3 * 3.0f`,  but to compute the product of two
+vectors,  `*` is not available pick from: `v1.dotProduct(v2)`, `v1.crossProduct(v2)` and `v1.scale(v2)`
+(component-wise multiplication).
+
+Vector classes also contain a variety of convenience methods, e.g.:
+
+* `v1.distanceTo(v1)`
+* `v1.lerp(v2, 0.5)` - Linear interpolation
+
+*Matrix classes:*
 
 Matrices are usually constructed using the convenience methods on the companion object.
 
@@ -47,10 +61,15 @@ Matrices can be composed using matrix multiplication:
 
 ```scala
 val modelViewMatrix = modelToWorldMatrix * worldToViewMatrix
-val normalViewMatrix = modelViewMatrix.normalMatrix
 ```
 
-Quaternion class:
+And contain convenience methods for common operations:
+
+```scala
+val normalViewMatrix = modelViewMatrix.normalMatrix // same as modelViewMatrix.inverse.transpose
+```
+
+*Quaternion class:*
 
 For gimbal lock free rotations,  quaternions can be used.
 
@@ -59,6 +78,8 @@ val quat = Quaternion.fromAxisAngle(Orientation.x, scala.math.Pi.toFloat/4)
 Matrix4x4.forRotation(quat) * Vector3(1, 1, 1)
 Vector3(1, 1, 1).rotate(quat)
 ```
+
+*Swizzle operators and constructors:*
 
 Swizzle operators work the same as in GLSL:
 
@@ -75,10 +96,18 @@ Constructors and swizzle operators can be used together to reshape and resize ve
 
 * `Vector4(0, vec2.yx, 0)` == `Vector4(0, vec2.y, vec2.x, 0)`
 
+*ByteBuffers:*
+
 ByteBuffer writers to ease integration with low level OpenGL APIs for the JVM such as LWJGL
 
 ```scala
-val cameraPosition = Vector4(10, 10, 5, 0).allocateBuffer
+val cameraPositionBuffer = Vector3(10, 10, 5).allocateBuffer
+```
+
+ByteBuffers can also be updated:
+
+```scala
+Vector3(10, 10, 4).updateBuffer(cameraPositionBuffer)
 ```
 
 OpenGL Programming in Scala
