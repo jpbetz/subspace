@@ -78,7 +78,7 @@ Constructors and swizzle operators can be used together to reshape and resize ve
 ByteBuffer writers to ease integration with low level OpenGL APIs for the JVM such as LWJGL
 
 ```scala
-val cameraPosition = Vector4(10, 10, 5, 0).allocateBuffer()
+val cameraPosition = Vector4(10, 10, 5, 0).allocateBuffer
 ```
 
 OpenGL Programming in Scala
@@ -92,18 +92,18 @@ and matrix classes, it is rather incomplete.  And in LWJGL 3, they are removing 
 To use this library with LWJGL,  simply build whatever types are needed and then use the toBuffer methods to produce the
 ByteBuffers needed by LWJGL.  E.g.:
 
-    val modelViewMatrix = Matrix4x4.forTranslationRotationScale(...)
-    glUniformMatrix4("modelViewMatrix", false, modelViewMatrix.toBuffer)
+    val modelViewMatrix = Matrix4x4.forTranslationRotationScale(modelPosition, modelQuaternion, modelScala)
+    glUniformMatrix4("modelViewMatrix", false, modelViewMatrix.allocateBuffer)
 
 Design
 -----
 
 Goals:
 
-* Be good at one thing.  Provide the vector and matrix types needed to program modern against a modern graphics pipeline, and nothing else.
 * Provide the best features from the vector and matrix types in shader languages like GLSL.
 * Consistent and complete.  Similar libraries for other languages have been studied to make sure all the convenience operations developers expect have been included.
 * Scala idomatic. Immutable case classes for all vector and matrix types. Carefully defined operator overloading for natural looking mathematical expressions.
+* Be good at one thing.  Provide the vector and matrix types needed for to drive a GPU from the CPU, and nothing else.
 * Minimal footprint.  No dependencies.
 
 Non-goals:
@@ -115,11 +115,11 @@ Non-goals:
 Current Limitations
 -------------------
 
-* All types are currently reference types.  This has negative performance implications.  While scala does allow
+* All types are currently reference types.  This may have negative performance implications.  While scala does allow
   stack allocated value types to be defined by extending AnyVal,  AnyVal can only be used for single field types, not
-  multi field types like Vector2.  It is not clear if Scala will ever support stack allocated value types that could
-  be used for my purposes.   Maybe if/when [Java adds value types](http://cr.openjdk.java.net/~jrose/values/values-0.html),
-  scala will provide a way to stack allocate these types.
+  multi field types like Vector2.
+  Maybe if/when [Java adds value types](http://cr.openjdk.java.net/~jrose/values/values-0.html),
+  scala will provide a way to stack allocate these types?
 
 TODO
 ----
