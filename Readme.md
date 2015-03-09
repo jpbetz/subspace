@@ -16,7 +16,7 @@ To minimize it's footprint, this library has no dependencies.  Is intended for u
 Usage
 -----
 
-### Vector classes
+### Vectors
 
 All vector classes are case classes with companion objects that provide additional functions and constructors.
 
@@ -46,7 +46,7 @@ Vector classes also contain a variety of convenience methods, e.g.:
 * `v1.lerp(v2, 0.5f)`
 * `v1.clamp(min, max)`
 
-### Matrix classes
+### Matrices
 
 Matrices are usually constructed using the convenience methods on the companion object.
 
@@ -68,15 +68,30 @@ Matrices also have convenience methods for common operations:
 val normalViewMatrix = modelViewMatrix.normalMatrix // same as modelViewMatrix.inverse.transpose
 ```
 
-### Quaternion class
+### Rotations
 
-For gimbal lock free rotations,  quaternions can be used.
+Rotations can be managed using any of the following:
+
+* Axis angle
+* Euler angles
+* Quaternions
+
+Internally,  Quaternions are used to handle all rotations.  But Quaternions can be constructed from an axis angle or
+Euler angles.
+
+For example, to create a transformation matrix from an axis angle:
 
 ```scala
-val quat = Quaternion.forAxisAngle(Orientation.x, scala.math.Pi.toFloat/4)
-Matrix4x4.forRotation(quat) * Vector3(1, 1, 1)
-Vector3(1, 1, 1).rotate(quat)
+Matrix4x4.forRotation(Quaternion.forAxisAngle(Orientation.x, scala.math.Pi.toFloat/4))
 ```
+
+And to create one from Euler angles:
+
+```scala
+Matrix4x4.forRotation(Quaternion.forEuler(Vector3(scala.math.Pi.toFloat/2, 0, 0)))
+```
+
+All angles are in radians.
 
 ### Swizzle operators
 
@@ -193,11 +208,11 @@ Current Limitations
 TODO
 ----
 
+* [ ] Publish to maven central
+* [ ] Flesh out scaladoc
 * [ ] Integrate with scala collection types (Product, Seq, ??)
 * [ ] Implement projection/reflection convenience methods on Vector3
-* [ ] Flesh out scaladoc
 * [ ] Add Color and UV coordinate related conveniences.  Might be as simple as adding swizzle operators (rgba, stpq) to Vector3 and Vector4.
-* [ ] Publish to maven central
 
 References
 ----------
