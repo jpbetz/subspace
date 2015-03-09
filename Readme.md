@@ -8,8 +8,8 @@ For more details, see: http://jpbetz.github.io/subspace/
 Inspired by [glm](http://glm.g-truc.net/0.9.6/index.html), Subspace makes the vector and matrix computations that needs
 to be performed on the CPU a bit easier.  It provides convenience features from shader programming like
 [swizzle operators](https://www.opengl.org/wiki/Data_Type_%28GLSL%29#Swizzling) as well as a comprehensive set of
-operations for graphics programming,  including functions that have been deprecated by OpenGL such as `glRotate`,
-`gluPerspective` and `gluLookAt`.
+operations for graphics programming,  including functions that have been deprecated by OpenGL such as `glRotate` and
+`gluPerspective`.
 
 To minimize it's footprint, this library has no dependencies.  Is intended for use with OpenGL, via bindings such as
 [LWJGL](http://www.lwjgl.org/).
@@ -17,7 +17,7 @@ To minimize it's footprint, this library has no dependencies.  Is intended for u
 Usage
 -----
 
-*Vector classes:*
+### Vector classes
 
 All vector classes are case classes with companion objects that provide additional functions and constructors.
 
@@ -29,7 +29,9 @@ val origin = Vector3.fill(0)
 Mathematical operators can be used operations that make sense mathematically:
 
 ```scala
-val translated = -v1/3f + v2
+val v1 = Vector3(3.2f, 1.5f, 0)
+val v2 = Vector3(5, 0.5f, 0)
+val translated = -(v1/3f + v2)
 ```
 
 All mathematical operators have an equivalent method.  `modelPosition + Vector3(0.1, 0, 0)` can also be written as
@@ -46,7 +48,7 @@ Vector classes also contain a variety of convenience methods, e.g.:
 * `v1.lerp(v2, 0.5)`
 * `v1.clamp(min, max)`
 
-*Matrix classes:*
+### Matrix classes
 
 Matrices are usually constructed using the convenience methods on the companion object.
 And Matrices can be combined using matrix multiplication.
@@ -54,7 +56,7 @@ And Matrices can be combined using matrix multiplication.
 ```scala
 val perspectiveMatrix = Matrix4x4.forPerspective(scala.math.Pi.toFloat/2f, 1f, 1f, zNear, zFar)
 val worldToViewMatrix = Matrix4x4.forRotation(cameraRotation)
-val modelToWorldMatrix = Matrix4x4.forRotation(modelRotation) * Matrix4x4.forTranslation(modelRotation)
+val modelToWorldMatrix = Matrix4x4.forTranslation(modelPosition) * Matrix4x4.forRotation(modelRotation)
 val modelViewMatrix = modelToWorldMatrix * worldToViewMatrix
 ```
 
@@ -64,7 +66,7 @@ Matrices have convenience methods for common operations:
 val normalViewMatrix = modelViewMatrix.normalMatrix // same as modelViewMatrix.inverse.transpose
 ```
 
-*Quaternion class:*
+### Quaternion class
 
 For gimbal lock free rotations,  quaternions can be used.
 
@@ -74,24 +76,31 @@ Matrix4x4.forRotation(quat) * Vector3(1, 1, 1)
 Vector3(1, 1, 1).rotate(quat)
 ```
 
-*Swizzle operators and constructors:*
+### Swizzle operators
 
 Swizzle operators work the same as in GLSL:
 
-* `vec3.zxy` is equivalent to `Vector3(vec3.z, vec3.y, vec3.z)`
-* `vec4.xz` is equivalent to `Vector2(vec4.x, vec4.z)`
-* `vec4.yyy` is equivalent to `Vector3(vec4.y, vec4.y, vec4.y)`
+With Swizzle Operators | Without
+-----------------------|--------
+`vec3.zxy`             | `Vector3(vec3.z, vec3.y, vec3.z)`
+`vec4.xz`              | `Vector2(vec4.x, vec4.z)`
+`vec4.yyy`             | `Vector3(vec4.y, vec4.y, vec4.y)`
 
 Vectors can be constructed from other vectors.  Similar to GLSL constructors:
 
-* `Vector4(vec3, 0)` is equivalent to `Vector4(vec3.x, vec3.y, vec3.z, 0)`
-* `Vector4(1, vec2, 0)` is equivalent to `Vector4(1, vec2.x, vec2.y, 0)`
+With Convenience Constructors | Without
+------------------------------|--------
+`Vector4(vec3, 0)`            | `Vector4(vec3.x, vec3.y, vec3.z, 0)`
+`Vector4(1, vec2, 0)`         | `Vector4(1, vec2.x, vec2.y, 0)`
+
 
 Constructors and swizzle operators can be used together to reshape and resize vectors:
 
-* `Vector4(0, vec2.yx, 0)` is equivalent to `Vector4(0, vec2.y, vec2.x, 0)`
+With Swizzle Operators + Constructors | Without
+--------------------------------------|--------
+`Vector4(0, vec2.yx, 0)`              | `Vector4(0, vec2.y, vec2.x, 0)`
 
-*ByteBuffers:*
+### ByteBuffers
 
 ByteBuffer writers to ease integration with low level OpenGL APIs for the JVM such as LWJGL
 
@@ -157,6 +166,7 @@ References
 ----------
 
 * http://glm.g-truc.net/0.9.6/index.html
+* https://www.opengl.org/wiki/Data_Type_%28GLSL%29#Swizzling
 * https://github.com/ra4king/LWJGL-OpenGL-Utils/tree/master/src/com/ra4king/opengl/util/math
 * http://developer.android.com/reference/android/opengl/Matrix.html
 * http://docs.unity3d.com/ScriptReference/index.html

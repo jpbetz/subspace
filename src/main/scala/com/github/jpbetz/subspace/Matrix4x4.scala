@@ -103,7 +103,7 @@ object Matrix4x4 {
  * Constructor takes values in column major order.  That is,  the first 4 values are the rows the first column.
  */
 // Originally the matrix cells were put into fields in anticipation of making this all stack allocated (using AnyVal
-// or similar).  That's not currently possible,  so this could potentiall be transitioned to a simple Float array.
+// or similar).  That's not currently possible,  so this could potentially be transitioned to a simple Float array.
 case class Matrix4x4(
     c0r0: Float, c0r1: Float, c0r2: Float, c0r3: Float,
     c1r0: Float, c1r1: Float, c1r2: Float, c1r3: Float,
