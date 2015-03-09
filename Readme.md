@@ -25,7 +25,7 @@ val position = Vector3(0, 0, 1)
 val origin = Vector3.fill(0)
 ```
 
-Mathematical operators can be used operations that make sense mathematically:
+Mathematical operators can be used for operations that make sense mathematically, e.g.:
 
 ```scala
 val v1 = Vector3(3.2f, 1.5f, 0)
@@ -33,7 +33,7 @@ val v2 = Vector3(5, 0.5f, 0)
 val v3 = -(v1/3f + v2)
 ```
 
-All mathematical operators have an equivalent method.  E.g. `v1 + v2` can also be written as `v1.add(v2)`.
+And all mathematical operators have an equivalent method.  E.g. `v1 + v2` can also be written as `v1.add(v2)`.
 
 Where mathematical operators cannot be overloaded in a clear and unambiguous way, the operator is not
 overloaded.  For example,  to multiply a vector with a scalar use: `vec3 * 3.0f`,  but to compute the product of two
@@ -62,7 +62,7 @@ val modelToWorldMatrix = Matrix4x4.forTranslation(modelPosition) * Matrix4x4.for
 val modelViewMatrix = modelToWorldMatrix * worldToViewMatrix
 ```
 
-Matrices also have convenience methods for common operations:
+Matrices also have convenience methods for common graphics operations:
 
 ```scala
 val normalViewMatrix = modelViewMatrix.normalMatrix // same as modelViewMatrix.inverse.transpose
@@ -137,6 +137,12 @@ To update an existing byte buffer:
 
 ```scala
 cameraPosition.updateBuffer(cameraPositionBuffer)
+```
+
+To read from a byte buffer:
+
+```scala
+Matrix4x4.fromBuffer(transformBuffer)
 ```
 
 OpenGL Programming in Scala
