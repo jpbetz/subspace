@@ -105,37 +105,37 @@ object Matrix4x4 {
 // Originally the matrix cells were put into fields in anticipation of making this all stack allocated (using AnyVal
 // or similar).  That's not currently possible,  so this could potentiall be transitioned to a simple Float array.
 case class Matrix4x4(
-    m00: Float, m01: Float, m02: Float, m03: Float,
-    m10: Float, m11: Float, m12: Float, m13: Float,
-    m20: Float, m21: Float, m22: Float, m23: Float,
-    m30: Float, m31: Float, m32: Float, m33: Float)
+    c0r0: Float, c0r1: Float, c0r2: Float, c0r3: Float,
+    c1r0: Float, c1r1: Float, c1r2: Float, c1r3: Float,
+    c2r0: Float, c2r1: Float, c2r2: Float, c2r3: Float,
+    c3r0: Float, c3r1: Float, c3r2: Float, c3r3: Float)
   extends Bufferable{
 
   def unary_- : Matrix4x4 = negate
   def negate: Matrix4x4 = {
     Matrix4x4(
-      -m00, -m01, -m02, -m03,
-      -m10, -m11, -m12, -m13,
-      -m20, -m21, -m22, -m23,
-      -m30, -m31, -m32, -m33)
+      -c0r0, -c0r1, -c0r2, -c0r3,
+      -c1r0, -c1r1, -c1r2, -c1r3,
+      -c2r0, -c2r1, -c2r2, -c2r3,
+      -c3r0, -c3r1, -c3r2, -c3r3)
   }
 
   def *(f: Float): Matrix4x4 = multiply(f)
   def multiply(f: Float): Matrix4x4 = {
     Matrix4x4(
-      m00*f, m01*f, m02*f, m03*f,
-      m10*f, m11*f, m12*f, m13*f,
-      m20*f, m21*f, m22*f, m23*f,
-      m30*f, m31*f, m32*f, m33*f)
+      c0r0*f, c0r1*f, c0r2*f, c0r3*f,
+      c1r0*f, c1r1*f, c1r2*f, c1r3*f,
+      c2r0*f, c2r1*f, c2r2*f, c2r3*f,
+      c3r0*f, c3r1*f, c3r2*f, c3r3*f)
   }
 
   def *(m: Matrix4x4): Matrix4x4 = multiply(m)
   def multiply(m: Matrix4x4): Matrix4x4 = {
     Matrix4x4(
-      m00 * m.m00 + m10 * m.m01 + m20 * m.m02 + m30 * m.m03,  m01 * m.m00 + m11 * m.m01 + m21 * m.m02 + m31 * m.m03,  m02 * m.m00 + m12 * m.m01 + m22 * m.m02 + m32 * m.m03,  m03 * m.m00 + m13 * m.m01 + m23 * m.m02 + m33 * m.m03,
-      m00 * m.m10 + m10 * m.m11 + m20 * m.m12 + m30 * m.m13,  m01 * m.m10 + m11 * m.m11 + m21 * m.m12 + m31 * m.m13,  m02 * m.m10 + m12 * m.m11 + m22 * m.m12 + m32 * m.m13,  m03 * m.m10 + m13 * m.m11 + m23 * m.m12 + m33 * m.m13,
-      m00 * m.m20 + m10 * m.m21 + m20 * m.m22 + m30 * m.m23,  m01 * m.m20 + m11 * m.m21 + m21 * m.m22 + m31 * m.m23,  m02 * m.m20 + m12 * m.m21 + m22 * m.m22 + m32 * m.m23,  m03 * m.m20 + m13 * m.m21 + m23 * m.m22 + m33 * m.m23,
-      m00 * m.m30 + m10 * m.m31 + m20 * m.m32 + m30 * m.m33,  m01 * m.m30 + m11 * m.m31 + m21 * m.m32 + m31 * m.m33,  m02 * m.m30 + m12 * m.m31 + m22 * m.m32 + m32 * m.m33,  m03 * m.m30 + m13 * m.m31 + m23 * m.m32 + m33 * m.m33)
+      c0r0 * m.c0r0 + c1r0 * m.c0r1 + c2r0 * m.c0r2 + c3r0 * m.c0r3,  c0r1 * m.c0r0 + c1r1 * m.c0r1 + c2r1 * m.c0r2 + c3r1 * m.c0r3,  c0r2 * m.c0r0 + c1r2 * m.c0r1 + c2r2 * m.c0r2 + c3r2 * m.c0r3,  c0r3 * m.c0r0 + c1r3 * m.c0r1 + c2r3 * m.c0r2 + c3r3 * m.c0r3,
+      c0r0 * m.c1r0 + c1r0 * m.c1r1 + c2r0 * m.c1r2 + c3r0 * m.c1r3,  c0r1 * m.c1r0 + c1r1 * m.c1r1 + c2r1 * m.c1r2 + c3r1 * m.c1r3,  c0r2 * m.c1r0 + c1r2 * m.c1r1 + c2r2 * m.c1r2 + c3r2 * m.c1r3,  c0r3 * m.c1r0 + c1r3 * m.c1r1 + c2r3 * m.c1r2 + c3r3 * m.c1r3,
+      c0r0 * m.c2r0 + c1r0 * m.c2r1 + c2r0 * m.c2r2 + c3r0 * m.c2r3,  c0r1 * m.c2r0 + c1r1 * m.c2r1 + c2r1 * m.c2r2 + c3r1 * m.c2r3,  c0r2 * m.c2r0 + c1r2 * m.c2r1 + c2r2 * m.c2r2 + c3r2 * m.c2r3,  c0r3 * m.c2r0 + c1r3 * m.c2r1 + c2r3 * m.c2r2 + c3r3 * m.c2r3,
+      c0r0 * m.c3r0 + c1r0 * m.c3r1 + c2r0 * m.c3r2 + c3r0 * m.c3r3,  c0r1 * m.c3r0 + c1r1 * m.c3r1 + c2r1 * m.c3r2 + c3r1 * m.c3r3,  c0r2 * m.c3r0 + c1r2 * m.c3r1 + c2r2 * m.c3r2 + c3r2 * m.c3r3,  c0r3 * m.c3r0 + c1r3 * m.c3r1 + c2r3 * m.c3r2 + c3r3 * m.c3r3)
   }
 
   /**
@@ -148,53 +148,53 @@ case class Matrix4x4(
    */
   def multiply(vec: Vector4): Vector4 = {
     Vector4(
-      m00 * vec.x + m10 * vec.y + m20 * vec.z + m30 * vec.w,
-      m01 * vec.x + m11 * vec.y + m21 * vec.z + m31 * vec.w,
-      m02 * vec.x + m12 * vec.y + m22 * vec.z + m32 * vec.w,
-      m03 * vec.x + m13 * vec.y + m23 * vec.z + m33 * vec.w)
+      c0r0 * vec.x + c1r0 * vec.y + c2r0 * vec.z + c3r0 * vec.w,
+      c0r1 * vec.x + c1r1 * vec.y + c2r1 * vec.z + c3r1 * vec.w,
+      c0r2 * vec.x + c1r2 * vec.y + c2r2 * vec.z + c3r2 * vec.w,
+      c0r3 * vec.x + c1r3 * vec.y + c2r3 * vec.z + c3r3 * vec.w)
   }
 
   def transpose: Matrix4x4 = {
     Matrix4x4(
-      m00, m10, m20, m30,
-      m01, m11, m21, m31,
-      m02, m12, m22, m32,
-      m03, m13, m23, m33
+      c0r0, c1r0, c2r0, c3r0,
+      c0r1, c1r1, c2r1, c3r1,
+      c0r2, c1r2, c2r2, c3r2,
+      c0r3, c1r3, c2r3, c3r3
     )
   }
 
   def determinant: Float = {
-    val a = m11 * m22 * m33 + m21 * m32 * m13 + m31 * m12 * m23 - m13 * m22 * m31 - m23 * m32 * m11 - m33 * m12 * m21
-    val b = m01 * m22 * m33 + m21 * m32 * m03 + m31 * m02 * m23 - m03 * m22 * m31 - m23 * m32 * m01 - m33 * m02 * m21
-    val c = m01 * m12 * m33 + m11 * m32 * m03 + m31 * m02 * m13 - m03 * m12 * m31 - m13 * m32 * m01 - m33 * m02 * m11
-    val d = m01 * m12 * m23 + m11 * m22 * m03 + m21 * m02 * m13 - m03 * m12 * m21 - m13 * m22 * m01 - m23 * m02 * m11
+    val a = c1r1 * c2r2 * c3r3 + c2r1 * c3r2 * c1r3 + c3r1 * c1r2 * c2r3 - c1r3 * c2r2 * c3r1 - c2r3 * c3r2 * c1r1 - c3r3 * c1r2 * c2r1
+    val b = c0r1 * c2r2 * c3r3 + c2r1 * c3r2 * c0r3 + c3r1 * c0r2 * c2r3 - c0r3 * c2r2 * c3r1 - c2r3 * c3r2 * c0r1 - c3r3 * c0r2 * c2r1
+    val c = c0r1 * c1r2 * c3r3 + c1r1 * c3r2 * c0r3 + c3r1 * c0r2 * c1r3 - c0r3 * c1r2 * c3r1 - c1r3 * c3r2 * c0r1 - c3r3 * c0r2 * c1r1
+    val d = c0r1 * c1r2 * c2r3 + c1r1 * c2r2 * c0r3 + c2r1 * c0r2 * c1r3 - c0r3 * c1r2 * c2r1 - c1r3 * c2r2 * c0r1 - c2r3 * c0r2 * c1r1
 
-    m00 * a - m10 * b + m20 * c - m30 * d
+    c0r0 * a - c1r0 * b + c2r0 * c - c3r0 * d
   }
 
   def inverse: Matrix4x4 = {
     // Compute inverse of a Matrix using minors, cofactors and adjugate
     // TODO: fix this.  the below approach is crazy
     val matrixOfCofactors = Matrix4x4(
-      +(m11 * m22 * m33 + m21 * m32 * m13 + m31 * m12 * m23 - m13 * m22 * m31 - m23 * m32 * m11 - m33 * m12 * m21),
-      -(m10 * m22 * m33 + m20 * m32 * m13 + m30 * m12 * m23 - m13 * m22 * m30 - m23 * m32 * m10 - m33 * m12 * m20),
-      +(m10 * m21 * m33 + m20 * m31 * m13 + m30 * m11 * m23 - m13 * m21 * m30 - m23 * m31 * m10 - m33 * m11 * m20),
-      -(m10 * m21 * m32 + m20 * m31 * m12 + m30 * m11 * m22 - m12 * m21 * m30 - m22 * m31 * m10 - m32 * m11 * m20),
+      +(c1r1 * c2r2 * c3r3 + c2r1 * c3r2 * c1r3 + c3r1 * c1r2 * c2r3 - c1r3 * c2r2 * c3r1 - c2r3 * c3r2 * c1r1 - c3r3 * c1r2 * c2r1),
+      -(c1r0 * c2r2 * c3r3 + c2r0 * c3r2 * c1r3 + c3r0 * c1r2 * c2r3 - c1r3 * c2r2 * c3r0 - c2r3 * c3r2 * c1r0 - c3r3 * c1r2 * c2r0),
+      +(c1r0 * c2r1 * c3r3 + c2r0 * c3r1 * c1r3 + c3r0 * c1r1 * c2r3 - c1r3 * c2r1 * c3r0 - c2r3 * c3r1 * c1r0 - c3r3 * c1r1 * c2r0),
+      -(c1r0 * c2r1 * c3r2 + c2r0 * c3r1 * c1r2 + c3r0 * c1r1 * c2r2 - c1r2 * c2r1 * c3r0 - c2r2 * c3r1 * c1r0 - c3r2 * c1r1 * c2r0),
 
-      -(m01 * m22 * m33 + m21 * m32 * m03 + m31 * m02 * m23 - m03 * m22 * m31 - m23 * m32 * m01 - m33 * m02 * m21),
-      +(m00 * m22 * m33 + m20 * m32 * m03 + m30 * m02 * m23 - m03 * m22 * m30 - m23 * m32 * m00 - m33 * m02 * m20),
-      -(m00 * m21 * m33 + m20 * m31 * m03 + m30 * m01 * m23 - m03 * m21 * m30 - m23 * m31 * m00 - m33 * m01 * m20),
-      +(m00 * m21 * m32 + m20 * m31 * m02 + m30 * m01 * m22 - m02 * m21 * m30 - m22 * m31 * m00 - m32 * m01 * m20),
+      -(c0r1 * c2r2 * c3r3 + c2r1 * c3r2 * c0r3 + c3r1 * c0r2 * c2r3 - c0r3 * c2r2 * c3r1 - c2r3 * c3r2 * c0r1 - c3r3 * c0r2 * c2r1),
+      +(c0r0 * c2r2 * c3r3 + c2r0 * c3r2 * c0r3 + c3r0 * c0r2 * c2r3 - c0r3 * c2r2 * c3r0 - c2r3 * c3r2 * c0r0 - c3r3 * c0r2 * c2r0),
+      -(c0r0 * c2r1 * c3r3 + c2r0 * c3r1 * c0r3 + c3r0 * c0r1 * c2r3 - c0r3 * c2r1 * c3r0 - c2r3 * c3r1 * c0r0 - c3r3 * c0r1 * c2r0),
+      +(c0r0 * c2r1 * c3r2 + c2r0 * c3r1 * c0r2 + c3r0 * c0r1 * c2r2 - c0r2 * c2r1 * c3r0 - c2r2 * c3r1 * c0r0 - c3r2 * c0r1 * c2r0),
 
-      +(m01 * m12 * m33 + m11 * m32 * m03 + m31 * m02 * m13 - m03 * m12 * m31 - m13 * m32 * m01 - m33 * m02 * m11),
-      -(m00 * m12 * m33 + m10 * m32 * m03 + m30 * m02 * m13 - m03 * m12 * m30 - m13 * m32 * m00 - m33 * m02 * m10),
-      +(m00 * m11 * m33 + m10 * m31 * m03 + m30 * m01 * m13 - m03 * m11 * m30 - m13 * m31 * m00 - m33 * m01 * m10),
-      -(m00 * m11 * m32 + m10 * m31 * m02 + m30 * m01 * m12 - m02 * m11 * m30 - m12 * m31 * m00 - m32 * m01 * m10),
+      +(c0r1 * c1r2 * c3r3 + c1r1 * c3r2 * c0r3 + c3r1 * c0r2 * c1r3 - c0r3 * c1r2 * c3r1 - c1r3 * c3r2 * c0r1 - c3r3 * c0r2 * c1r1),
+      -(c0r0 * c1r2 * c3r3 + c1r0 * c3r2 * c0r3 + c3r0 * c0r2 * c1r3 - c0r3 * c1r2 * c3r0 - c1r3 * c3r2 * c0r0 - c3r3 * c0r2 * c1r0),
+      +(c0r0 * c1r1 * c3r3 + c1r0 * c3r1 * c0r3 + c3r0 * c0r1 * c1r3 - c0r3 * c1r1 * c3r0 - c1r3 * c3r1 * c0r0 - c3r3 * c0r1 * c1r0),
+      -(c0r0 * c1r1 * c3r2 + c1r0 * c3r1 * c0r2 + c3r0 * c0r1 * c1r2 - c0r2 * c1r1 * c3r0 - c1r2 * c3r1 * c0r0 - c3r2 * c0r1 * c1r0),
 
-      -(m01 * m12 * m23 + m11 * m22 * m03 + m21 * m02 * m13 - m03 * m12 * m21 - m13 * m22 * m01 - m23 * m02 * m11),
-      +(m00 * m12 * m23 + m10 * m22 * m03 + m20 * m02 * m13 - m03 * m12 * m20 - m13 * m22 * m00 - m23 * m02 * m10),
-      -(m00 * m11 * m23 + m10 * m21 * m03 + m20 * m01 * m13 - m03 * m11 * m20 - m13 * m21 * m00 - m23 * m01 * m10),
-      +(m00 * m11 * m22 + m10 * m21 * m02 + m20 * m01 * m12 - m02 * m11 * m20 - m12 * m21 * m00 - m22 * m01 * m10)
+      -(c0r1 * c1r2 * c2r3 + c1r1 * c2r2 * c0r3 + c2r1 * c0r2 * c1r3 - c0r3 * c1r2 * c2r1 - c1r3 * c2r2 * c0r1 - c2r3 * c0r2 * c1r1),
+      +(c0r0 * c1r2 * c2r3 + c1r0 * c2r2 * c0r3 + c2r0 * c0r2 * c1r3 - c0r3 * c1r2 * c2r0 - c1r3 * c2r2 * c0r0 - c2r3 * c0r2 * c1r0),
+      -(c0r0 * c1r1 * c2r3 + c1r0 * c2r1 * c0r3 + c2r0 * c0r1 * c1r3 - c0r3 * c1r1 * c2r0 - c1r3 * c2r1 * c0r0 - c2r3 * c0r1 * c1r0),
+      +(c0r0 * c1r1 * c2r2 + c1r0 * c2r1 * c0r2 + c2r0 * c0r1 * c1r2 - c0r2 * c1r1 * c2r0 - c1r2 * c2r1 * c0r0 - c2r2 * c0r1 * c1r0)
     )
     // TODO: if determinant is 0, throw a meaningful exception
     matrixOfCofactors.transpose.multiply(1 / determinant)
@@ -204,20 +204,20 @@ case class Matrix4x4(
 
   def column(index: Int): Vector4 = {
     index match {
-      case 0 => Vector4(m00, m01, m02, m03)
-      case 1 => Vector4(m10, m11, m12, m13)
-      case 2 => Vector4(m20, m21, m22, m23)
-      case 3 => Vector4(m30, m31, m32, m33)
+      case 0 => Vector4(c0r0, c0r1, c0r2, c0r3)
+      case 1 => Vector4(c1r0, c1r1, c1r2, c1r3)
+      case 2 => Vector4(c2r0, c2r1, c2r2, c2r3)
+      case 3 => Vector4(c3r0, c3r1, c3r2, c3r3)
       case _ => throw new IllegalArgumentException("index is out of range.  Must be between 0 and 4")
     }
   }
 
   def row(index: Int): Vector4 = {
     index match {
-      case 0 => Vector4(m00, m10, m20, m30)
-      case 1 => Vector4(m01, m11, m21, m31)
-      case 2 => Vector4(m02, m12, m22, m32)
-      case 3 => Vector4(m03, m13, m23, m33)
+      case 0 => Vector4(c0r0, c1r0, c2r0, c3r0)
+      case 1 => Vector4(c0r1, c1r1, c2r1, c3r1)
+      case 2 => Vector4(c0r2, c1r2, c2r2, c3r2)
+      case 3 => Vector4(c0r3, c1r3, c2r3, c3r3)
       case _ => throw new IllegalArgumentException("index is out of range.  Must be between 0 and 4")
     }
   }
@@ -225,10 +225,10 @@ case class Matrix4x4(
   def allocateBuffer: FloatBuffer = {
     val direct = Buffers.createFloatBuffer(16)
     direct
-      .put(m00).put(m01).put(m02).put(m03)
-      .put(m10).put(m11).put(m12).put(m13)
-      .put(m20).put(m21).put(m22).put(m23)
-      .put(m30).put(m31).put(m32).put(m33)
+      .put(c0r0).put(c0r1).put(c0r2).put(c0r3)
+      .put(c1r0).put(c1r1).put(c1r2).put(c1r3)
+      .put(c2r0).put(c2r1).put(c2r2).put(c2r3)
+      .put(c3r0).put(c3r1).put(c3r2).put(c3r3)
     direct.flip()
     direct
   }
@@ -236,18 +236,18 @@ case class Matrix4x4(
   def updateBuffer(buffer: FloatBuffer): Unit = {
     buffer.clear()
     buffer
-      .put(m00).put(m01).put(m02).put(m03)
-      .put(m10).put(m11).put(m12).put(m13)
-      .put(m20).put(m21).put(m22).put(m23)
-      .put(m30).put(m31).put(m32).put(m33)
+      .put(c0r0).put(c0r1).put(c0r2).put(c0r3)
+      .put(c1r0).put(c1r1).put(c1r2).put(c1r3)
+      .put(c2r0).put(c2r1).put(c2r2).put(c2r3)
+      .put(c3r0).put(c3r1).put(c3r2).put(c3r3)
     buffer.flip()
   }
 
   override def toString: String = {
-    s"""[[$m00, $m01, $m02, $m03]
-       | [$m10, $m11, $m12, $m13]
-       | [$m20, $m21, $m22, $m23]
-       | [$m30, $m31, $m32, $m33]]
+    s"""[[$c0r0, $c0r1, $c0r2, $c0r3]
+       | [$c1r0, $c1r1, $c1r2, $c1r3]
+       | [$c2r0, $c2r1, $c2r2, $c2r3]
+       | [$c3r0, $c3r1, $c3r2, $c3r3]]
      """.stripMargin
   }
 }
