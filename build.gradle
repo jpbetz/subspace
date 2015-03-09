@@ -1,13 +1,83 @@
-repositories {
-    mavenCentral()
+allprojects {
+    apply plugin: 'idea'
 }
 
-apply plugin: 'scala'
-apply plugin: 'idea'
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.2'
+}
 
-sourceCompatibility = 1.7
+subprojects {
+    apply plugin: 'maven'
+    apply plugin: 'signing'
+    apply plugin: 'java'
 
-dependencies {
-    compile 'org.scala-lang:scala-library:2.11.5'
-    testCompile "org.testng:testng:6.1.1"
+    project.group = "com.github.jpbetz"
+
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    task javadocJar(type: Jar) {
+        classifier = 'javadoc'
+        from javadoc
+    }
+
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    artifacts {
+        archives javadocJar, sourcesJar
+    }
+
+    signing {
+        sign configurations.archives
+    }
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                }
+
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                }
+
+                pom.project {
+                    packaging 'jar'
+                    // optionally artifactId can be defined here
+                    description 'Lightweight vector and matrix math library for OpenGL programming in Scala.'
+                    url 'http://jpbetz.github.io/subspace/'
+
+                    scm {
+                        connection 'https://github.com/jpbetz/subspace.git'
+                        developerConnection 'git@github.com:jpbetz/subspace.git'
+                        url 'https://github.com/jpbetz/subspace/tree/master/'
+                    }
+
+                    licenses {
+                        license {
+                            name 'The Apache License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'jpbetz'
+                            name 'Joe Betz'
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

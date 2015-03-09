@@ -1,0 +1,12 @@
+apply plugin: 'scala'
+
+sourceCompatibility = 1.7
+
+dependencies {
+    compile 'org.scala-lang:scala-library:2.11.5'
+    testCompile "org.testng:testng:6.1.1"
+}
+
+test {
+    useTestNG()
+}
