@@ -34,8 +34,7 @@ val v2 = Vector3(5, 0.5f, 0)
 val translated = -(v1/3f + v2)
 ```
 
-All mathematical operators have an equivalent method.  `modelPosition + Vector3(0.1, 0, 0)` can also be written as
-`modelPosition.add(Vector3(0.1, 0, 0))`.
+All mathematical operators have an equivalent method.  `v1 + v2` can also be written as `v1.add(v2)`.
 
 Where mathematical operators cannot be overloaded in a clear and unambiguous way, the operator is not
 overloaded.  For example,  to multiply a vector with a scalar use: `vec3 * 3.0f`,  but to compute the product of two
@@ -45,7 +44,7 @@ vectors,  `*` is not available.  Instead, use `v1.dotProduct(v2)`, `v1.crossProd
 Vector classes also contain a variety of convenience methods, e.g.:
 
 * `v1.distanceTo(v1)`
-* `v1.lerp(v2, 0.5)`
+* `v1.lerp(v2, 0.5f)`
 * `v1.clamp(min, max)`
 
 ### Matrix classes
@@ -54,7 +53,7 @@ Matrices are usually constructed using the convenience methods on the companion 
 And Matrices can be combined using matrix multiplication.
 
 ```scala
-val perspectiveMatrix = Matrix4x4.forPerspective(scala.math.Pi.toFloat/2f, 1f, 1f, zNear, zFar)
+val perspectiveMatrix = Matrix4x4.forPerspective(scala.math.Pi.toFloat/3f, 1f, 1f, 0.001f, 1000f)
 val worldToViewMatrix = Matrix4x4.forRotation(cameraRotation)
 val modelToWorldMatrix = Matrix4x4.forTranslation(modelPosition) * Matrix4x4.forRotation(modelRotation)
 val modelViewMatrix = modelToWorldMatrix * worldToViewMatrix
@@ -71,34 +70,37 @@ val normalViewMatrix = modelViewMatrix.normalMatrix // same as modelViewMatrix.i
 For gimbal lock free rotations,  quaternions can be used.
 
 ```scala
-val quat = Quaternion.fromAxisAngle(Orientation.x, scala.math.Pi.toFloat/4)
+val quat = Quaternion.forAxisAngle(Orientation.x, scala.math.Pi.toFloat/4)
 Matrix4x4.forRotation(quat) * Vector3(1, 1, 1)
 Vector3(1, 1, 1).rotate(quat)
 ```
 
 ### Swizzle operators
 
-Swizzle operators work the same as in GLSL:
+Swizzle operators allow a new vector to be created from an existing vector by specifying the dimensions from the existing
+vector to use to create the new vector.  Dimensions can be specified in any order and can be repeated.  If few dimensions
+are specified, a lower dimension vector is created.
 
-With Swizzle Operators | Without
------------------------|--------
-`vec3.zxy`             | `Vector3(vec3.z, vec3.y, vec3.z)`
-`vec4.xz`              | `Vector2(vec4.x, vec4.z)`
-`vec4.yyy`             | `Vector3(vec4.y, vec4.y, vec4.y)`
+Swizzle Operator | Equivalent code
+-----------------|----------------
+`vec3.zxy`       | `Vector3(vec3.z, vec3.y, vec3.z)`
+`vec4.xz`        | `Vector2(vec4.x, vec4.z)`
+`vec4.yyy`       | `Vector3(vec4.y, vec4.y, vec4.y)`
 
 Vectors can be constructed from other vectors.  Similar to GLSL constructors:
 
-With Convenience Constructors | Without
-------------------------------|--------
-`Vector4(vec3, 0)`            | `Vector4(vec3.x, vec3.y, vec3.z, 0)`
-`Vector4(1, vec2, 0)`         | `Vector4(1, vec2.x, vec2.y, 0)`
+Convenience Constructors | Equivalent code
+-------------------------|----------------
+`Vector4(vec3, 1)`       | `Vector4(vec3.x, vec3.y, vec3.z, 1)`
+`Vector4(1, vec2, 1)`    | `Vector4(1, vec2.x, vec2.y, 1)`
 
 
 Constructors and swizzle operators can be used together to reshape and resize vectors:
 
-With Swizzle Operators + Constructors | Without
---------------------------------------|--------
-`Vector4(0, vec2.yx, 0)`              | `Vector4(0, vec2.y, vec2.x, 0)`
+Swizzle Operators + Constructors | Equivalent code
+---------------------------------|----------------
+`Vector4(0, vec2.yx, 1)`         | `Vector4(0, vec2.y, vec2.x, 1)`
+`Vector4(vec3.zxy, 1)`           | `Vector4(vec3.z, vec3.y, vec3.x, 1)`
 
 ### ByteBuffers
 
