@@ -23,27 +23,28 @@ All vector classes are case classes with companion objects that provide addition
 
 ```scala
 val position = Vector3(0, 0, 1)
-val origin = Vector3.zero
+val origin = Vector3.fill(0)
 ```
 
 Mathematical operators can be used operations that make sense mathematically:
 
 ```scala
-val translated = modelPosition + Vector3(0.1, 0, 0)
+val translated = -v1/3f + v2
 ```
 
-All operators have an equivalent method.  `modelPosition + Vector3(0.1, 0, 0)` can also be written as
+All mathematical operators have an equivalent method.  `modelPosition + Vector3(0.1, 0, 0)` can also be written as
 `modelPosition.add(Vector3(0.1, 0, 0))`.
 
 Where mathematical operators cannot be overloaded in a clear and unambiguous way, the operator is not
 overloaded.  For example,  to multiply a vector with a scalar use: `vec3 * 3.0f`,  but to compute the product of two
-vectors,  `*` is not available.  Instead, pick from: `v1.dotProduct(v2)`, `v1.crossProduct(v2)` or `v1.scale(v2)`
-(component-wise multiplication).
+vectors,  `*` is not available.  Instead, use `v1.dotProduct(v2)`, `v1.crossProduct(v2)` or `v1.scale(v2)`
+(for component-wise multiplication).
 
 Vector classes also contain a variety of convenience methods, e.g.:
 
 * `v1.distanceTo(v1)`
 * `v1.lerp(v2, 0.5)`
+* `v1.clamp(min, max)`
 
 *Matrix classes:*
 
@@ -115,7 +116,7 @@ and matrix classes, it is rather incomplete.  And in LWJGL 3, they are removing 
 To use this library with LWJGL,  simply build whatever types are needed and then use the toBuffer methods to produce the
 ByteBuffers needed by LWJGL.  E.g.:
 
-    val modelViewMatrix = Matrix4x4.forTranslationRotationScale(modelPosition, modelQuaternion, modelScala)
+    val modelViewMatrix = Matrix4x4.forTranslationRotationScale(modelPosition, modelQuaternion, modelScale)
     glUniformMatrix4("modelViewMatrix", false, modelViewMatrix.allocateBuffer)
 
 Design
@@ -146,8 +147,7 @@ Current Limitations
 TODO
 ----
 
-* [ ] Finish up test suite
-* [ ] Integrate with scala collection types (Product
+* [ ] Integrate with scala collection types (Product, Seq, ??)
 * [ ] Implement projection/reflection convenience methods on Vector3
 * [ ] Flesh out scaladoc
 * [ ] Add Color and UV coordinate related conveniences.  Might be as simple as adding swizzle operators (rgba, stpq) to Vector3 and Vector4.

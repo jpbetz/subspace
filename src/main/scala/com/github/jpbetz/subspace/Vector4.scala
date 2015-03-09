@@ -3,8 +3,7 @@ package com.github.jpbetz.subspace
 import java.nio.FloatBuffer
 
 object Vector4 {
-  lazy val zero = Vector4(0f, 0f, 0f, 0f)
-  lazy val one = Vector4(1f, 1f, 1f, 1f)
+  def fill(value: Float): Vector4 = Vector4(value, value, value, value)
 
   // convenience constructors
   def apply(xyz: Vector3, w: Float): Vector4 = Vector4(xyz(0), xyz(1), xyz(2), w)
@@ -20,10 +19,7 @@ case class Vector4(
     y: Float,
     z: Float,
     w: Float)
-  extends Vector
-  with Bufferable {
-
-  def size: Int = 4
+  extends Bufferable {
 
   def apply(index: Int): Float = {
     index match {

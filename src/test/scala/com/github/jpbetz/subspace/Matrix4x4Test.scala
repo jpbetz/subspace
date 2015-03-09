@@ -1,6 +1,5 @@
 package com.github.jpbetz.subspace
 
-import org.testng.Assert._
 import org.testng.annotations.Test
 
 class Matrix4x4Test extends Asserts {
@@ -10,7 +9,7 @@ class Matrix4x4Test extends Asserts {
   private val point2 = Vector3(20, 50, -30)
   private val point2w = Vector4(point2, 1)
 
-  private val m = Matrix4x4(
+  private val matrix1 = Matrix4x4(
     1,2,3,4,
     5,6,2,3,
     4,5,6,7,
@@ -79,13 +78,13 @@ class Matrix4x4Test extends Asserts {
   }
 
   @Test def testTranspose(): Unit = {
-    var transpose = Matrix4x4(
+    val transpose = Matrix4x4(
       1, 5, 4, 1,
       2, 6, 5, 5,
       3, 2, 6, 3,
       4, 3, 7, 2)
 
-    assertMatrices(m.transpose, transpose)
+    assertMatrices(matrix1.transpose, transpose)
   }
 
   @Test def testInverse(): Unit = {
@@ -95,6 +94,6 @@ class Matrix4x4Test extends Asserts {
       -1.146f, -0.44f, 0.786f, 0.2f,
       1.08f, 0.24f, -0.52f, -0.2f)
 
-    assertMatrices(m.inverse, inverse)
+    assertMatrices(matrix1.inverse, inverse)
   }
 }

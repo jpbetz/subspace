@@ -8,24 +8,14 @@ import java.nio.FloatBuffer
  * Uses right hand rule orientation (note that OpenGL uses right handed, but DirectX use left handed).
  */
 object Vector3 {
-  lazy val zero = Vector3(0f, 0f, 0f)
-  lazy val one = Vector3(1f, 1f, 1f)
-
-  lazy val back = Vector3(0, 0, -1)
-  lazy val down = Vector3(0, -1, 0)
-  lazy val forward = Vector3(0, 0, 1)
-  lazy val left = Vector3(-1, 0, 0)
-  lazy val right = Vector3(1, 0, 0)
-  lazy val up = Vector3(0, 1, 0)
+  def fill(value: Float): Vector3 = Vector3(value, value, value)
 
   // convenience constructors
   def apply(xy: Vector2, z: Float): Vector3 = Vector3(xy(0), xy(1), z)
   def apply(x: Float, yz: Vector2): Vector3 = Vector3(x, yz(0), yz(1))
 }
 
-case class Vector3(x: Float, y: Float, z: Float) extends Vector with Bufferable {
-
-  def size: Int = 3
+case class Vector3(x: Float, y: Float, z: Float) extends Bufferable {
 
   def apply(index: Int): Float = {
     index match {
@@ -136,13 +126,13 @@ case class Vector3(x: Float, y: Float, z: Float) extends Vector with Bufferable 
   }
 
   // TODO: Projects a vector onto another vector.
-  def project(onNormal: Vector3): Vector3 = ???
+  //def project(onNormal: Vector3): Vector3 = ???
 
   // TODO: Projects a vector onto a plane defined by a normal orthogonal to the plane.
-  def projectOntoPlane(planeNormal: Vector3): Vector3 = ???
+  //def projectOntoPlane(planeNormal: Vector3): Vector3 = ???
 
   // TODO: Reflects a vector off the plane defined by a normal.
-  def reflect(inNormal: Vector3): Vector3 = ???
+  //def reflect(inNormal: Vector3): Vector3 = ???
 
   // TODO: Rotates a vector current towards target.
   //This function is similar to MoveTowards except that the vector is treated as a direction rather than a position. The current vector will be rotated round toward the target direction by an angle of maxRadiansDelta, although it will land exactly on the target rather than overshoot. If the magnitudes of current and target are different then the magnitude of the result will be linearly interpolated during the rotation. If a negative value is used for maxRadiansDelta, the vector will rotate away from target/ until it is pointing in exactly the opposite direction, then stop.
@@ -156,7 +146,7 @@ case class Vector3(x: Float, y: Float, z: Float) extends Vector with Bufferable 
     s"($x, $y, $z)"
   }
 
-  // swizzling
+  // swizzle operators
   def xx = Vector2(x, x)
   def xy = Vector2(x, y)
   def xz = Vector2(x, z)

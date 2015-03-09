@@ -3,12 +3,10 @@ package com.github.jpbetz.subspace
 import java.nio.FloatBuffer
 
 object Vector2 {
-  lazy val origin = Vector2(0f, 0f)
+  def fill(value: Float): Vector2 = Vector2(value, value)
 }
 
-case class Vector2(x: Float, y: Float) extends Vector with Bufferable {
-
-  def size: Int = 2
+case class Vector2(x: Float, y: Float) extends Bufferable {
 
   def apply(index: Int): Float = {
     index match {
@@ -91,7 +89,7 @@ case class Vector2(x: Float, y: Float) extends Vector with Bufferable {
     )
   }
 
-  def rotate(): Vector2 = ???
+  //def rotate(): Vector2 = ???
 
   def copy(): Vector2 = {
     Vector2(this.x, this.y)
@@ -100,6 +98,13 @@ case class Vector2(x: Float, y: Float) extends Vector with Bufferable {
   override def toString: String = {
     s"($x, $y)"
   }
+
+  // swizzle operators
+  def xx = Vector2(x, x)
+  def xy = Vector2(x, y)
+
+  def yx = Vector2(y, x)
+  def yy = Vector2(y, y)
 
   def allocateBuffer: FloatBuffer = {
     val direct = Buffers.createFloatBuffer(2)
