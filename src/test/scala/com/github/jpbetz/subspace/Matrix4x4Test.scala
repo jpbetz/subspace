@@ -1,5 +1,6 @@
 package com.github.jpbetz.subspace
 
+import org.testng.Assert._
 import org.testng.annotations.Test
 
 class Matrix4x4Test extends Asserts {
@@ -95,5 +96,14 @@ class Matrix4x4Test extends Asserts {
       1.08f, 0.24f, -0.52f, -0.2f)
 
     assertMatrices(matrix1.inverse, inverse)
+  }
+
+  @Test def testBuffer(): Unit = {
+    val buffer = matrix1.allocateBuffer
+    assertEquals(matrix1, Matrix4x4.fromBuffer(buffer))
+
+    val updateBuffer = Matrix4x4.allocateEmptyBuffer
+    matrix1.updateBuffer(updateBuffer)
+    assertEquals(matrix1, Matrix4x4.fromBuffer(updateBuffer))
   }
 }

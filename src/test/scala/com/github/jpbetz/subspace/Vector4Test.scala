@@ -95,16 +95,13 @@ class Vector4Test extends Asserts {
   }
 
   @Test def testBuffer(): Unit = {
-    val buffer = Vector4(1, 10, 5, 1).allocateBuffer
-    assertEquals(buffer.get(0), 1f)
-    assertEquals(buffer.get(1), 10f)
-    assertEquals(buffer.get(2), 5f)
-    assertEquals(buffer.get(3), 1f)
+    val v1 = Vector4(1, 10, 5, 1)
 
-    Vector4(-2, -20, -5, -1).updateBuffer(buffer)
-    assertEquals(buffer.get(0), -2f)
-    assertEquals(buffer.get(1), -20f)
-    assertEquals(buffer.get(2), -5f)
-    assertEquals(buffer.get(3), -1f)
+    val buffer = v1.allocateBuffer
+    assertEquals(v1, Vector4.fromBuffer(buffer))
+
+    val updateBuffer = Vector4.allocateEmptyBuffer
+    v1.updateBuffer(updateBuffer)
+    assertEquals(v1, Vector4.fromBuffer(updateBuffer))
   }
 }

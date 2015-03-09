@@ -10,6 +10,12 @@ import java.nio.FloatBuffer
 object Vector3 {
   def fill(value: Float): Vector3 = Vector3(value, value, value)
 
+  def allocateEmptyBuffer: FloatBuffer = Buffers.createFloatBuffer(3)
+
+  def fromBuffer(buffer: FloatBuffer): Vector3 = {
+    Vector3(buffer.get(0), buffer.get(1), buffer.get(2))
+  }
+
   // convenience constructors
   def apply(xy: Vector2, z: Float): Vector3 = Vector3(xy(0), xy(1), z)
   def apply(x: Float, yz: Vector2): Vector3 = Vector3(x, yz(0), yz(1))

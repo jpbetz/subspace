@@ -4,6 +4,16 @@ import java.nio.FloatBuffer
 
 object Matrix4x4 {
 
+  def allocateEmptyBuffer: FloatBuffer = Buffers.createFloatBuffer(16)
+
+  def fromBuffer(buffer: FloatBuffer): Matrix4x4 = {
+    Matrix4x4(
+      buffer.get(0), buffer.get(1), buffer.get(2), buffer.get(3),
+      buffer.get(4), buffer.get(5), buffer.get(6), buffer.get(7),
+      buffer.get(8), buffer.get(9), buffer.get(10), buffer.get(11),
+      buffer.get(12), buffer.get(13), buffer.get(14), buffer.get(15))
+  }
+
   lazy val identity = Matrix4x4(
     1, 0, 0, 0,
     0, 1, 0, 0,

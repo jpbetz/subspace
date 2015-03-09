@@ -30,10 +30,10 @@ Mathematical operators can be used operations that make sense mathematically:
 ```scala
 val v1 = Vector3(3.2f, 1.5f, 0)
 val v2 = Vector3(5, 0.5f, 0)
-val translated = -(v1/3f + v2)
+val v3 = -(v1/3f + v2)
 ```
 
-All mathematical operators have an equivalent method.  `v1 + v2` can also be written as `v1.add(v2)`.
+All mathematical operators have an equivalent method.  E.g. `v1 + v2` can also be written as `v1.add(v2)`.
 
 Where mathematical operators cannot be overloaded in a clear and unambiguous way, the operator is not
 overloaded.  For example,  to multiply a vector with a scalar use: `vec3 * 3.0f`,  but to compute the product of two
@@ -42,23 +42,27 @@ vectors,  `*` is not available.  Instead, use `v1.dotProduct(v2)`, `v1.crossProd
 
 Vector classes also contain a variety of convenience methods, e.g.:
 
-* `v1.distanceTo(v1)`
+* `v1.distanceTo(v2)`
 * `v1.lerp(v2, 0.5f)`
 * `v1.clamp(min, max)`
 
 ### Matrix classes
 
 Matrices are usually constructed using the convenience methods on the companion object.
-And Matrices can be combined using matrix multiplication.
 
 ```scala
 val perspectiveMatrix = Matrix4x4.forPerspective(scala.math.Pi.toFloat/3f, 1f, 1f, 0.001f, 1000f)
 val worldToViewMatrix = Matrix4x4.forRotation(cameraRotation)
+```
+
+Matrices can be combined using matrix multiplication.
+
+```scala
 val modelToWorldMatrix = Matrix4x4.forTranslation(modelPosition) * Matrix4x4.forRotation(modelRotation)
 val modelViewMatrix = modelToWorldMatrix * worldToViewMatrix
 ```
 
-Matrices have convenience methods for common operations:
+Matrices also have convenience methods for common operations:
 
 ```scala
 val normalViewMatrix = modelViewMatrix.normalMatrix // same as modelViewMatrix.inverse.transpose
@@ -103,16 +107,21 @@ Swizzle Operators + Constructors | Equivalent code
 
 ### ByteBuffers
 
-ByteBuffer writers to ease integration with low level OpenGL APIs for the JVM such as LWJGL
+Integrating with graphics API bindings for the JVM, such as LWJGL, may require allocating byte buffers for vectors
+and matrices.  Usually so they can be passed to shaders as uniforms.
+
+To allocate a new byte buffer:
 
 ```scala
-val cameraPositionBuffer = Vector3(10, 10, 5).allocateBuffer
+val cameraPosition = Vector3(10, 10, 5)
+...
+val cameraPositionBuffer = cameraPosition.allocateBuffer
 ```
 
-ByteBuffers can also be updated:
+To update an existing byte buffer:
 
 ```scala
-Vector3(10, 10, 4).updateBuffer(cameraPositionBuffer)
+cameraPosition.updateBuffer(cameraPositionBuffer)
 ```
 
 OpenGL Programming in Scala
@@ -126,8 +135,28 @@ and matrix classes, it is rather incomplete.  And in LWJGL 3, they are removing 
 To use this library with LWJGL,  simply build whatever types are needed and then use the toBuffer methods to produce the
 ByteBuffers needed by LWJGL.  E.g.:
 
-    val modelViewMatrix = Matrix4x4.forTranslationRotationScale(modelPosition, modelQuaternion, modelScale)
-    glUniformMatrix4("modelViewMatrix", false, modelViewMatrix.allocateBuffer)
+```scala
+val modelViewMatrixBuffer = Matrix4x4.allocateEmptyBuffer
+...
+val modelViewMatrix = Matrix4x4.forTranslationRotationScale(modelPosition, modelQuaternion, modelScale)
+modelViewMatrix.updateBuffer(modelViewMatrixBuffer)
+...
+glUniformMatrix4(modelViewMatrixUniform, false, modelViewMatrixBuffer)
+```
+
+Buffers can also be allocated from existing objects, e.g.:
+
+```scala
+val perspectiveMatrixBuffer = perspectiveMatrix.allocateBuffer
+...
+glUniformMatrix4(perspectiveMatrixUniform, false, perspectiveMatrixBuffer)
+```
+
+And buffers can be read using companion objects, e.g.:
+
+```scala
+val position = Vector3.fromBuffer(byteBuffer)
+```
 
 Questions and Feedback
 ----------------------

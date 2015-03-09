@@ -83,12 +83,13 @@ class Vector2Test extends Asserts {
   }
 
   @Test def testBuffer(): Unit = {
-    val buffer = Vector2(1, 10).allocateBuffer
-    assertEquals(buffer.get(0), 1f)
-    assertEquals(buffer.get(1), 10f)
+    val v1 = Vector2(1, 10)
 
-    Vector2(-2, -20).updateBuffer(buffer)
-    assertEquals(buffer.get(0), -2f)
-    assertEquals(buffer.get(1), -20f)
+    val buffer = v1.allocateBuffer
+    assertEquals(v1, Vector2.fromBuffer(buffer))
+
+    val updateBuffer = Vector2.allocateEmptyBuffer
+    v1.updateBuffer(updateBuffer)
+    assertEquals(v1, Vector2.fromBuffer(updateBuffer))
   }
 }

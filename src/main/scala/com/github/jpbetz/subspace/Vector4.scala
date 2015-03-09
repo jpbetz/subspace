@@ -5,6 +5,12 @@ import java.nio.FloatBuffer
 object Vector4 {
   def fill(value: Float): Vector4 = Vector4(value, value, value, value)
 
+  def allocateEmptyBuffer: FloatBuffer = Buffers.createFloatBuffer(4)
+
+  def fromBuffer(buffer: FloatBuffer): Vector4 = {
+    Vector4(buffer.get(0), buffer.get(1), buffer.get(2), buffer.get(3))
+  }
+
   // convenience constructors
   def apply(xyz: Vector3, w: Float): Vector4 = Vector4(xyz(0), xyz(1), xyz(2), w)
   def apply(x: Float, yzw: Vector3): Vector4 = Vector4(x, yzw(0), yzw(1), yzw(2))

@@ -4,6 +4,12 @@ import java.nio.FloatBuffer
 
 object Vector2 {
   def fill(value: Float): Vector2 = Vector2(value, value)
+
+  def allocateEmptyBuffer: FloatBuffer = Buffers.createFloatBuffer(2)
+
+  def fromBuffer(buffer: FloatBuffer): Vector2 = {
+    Vector2(buffer.get(0), buffer.get(1))
+  }
 }
 
 case class Vector2(x: Float, y: Float) extends Bufferable {
