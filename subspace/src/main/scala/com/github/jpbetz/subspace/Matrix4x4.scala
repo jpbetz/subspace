@@ -53,7 +53,7 @@ object Matrix4x4 {
       -x,  -y,  -z,   1)
   }
 
-  def forRotation(q: Quaternion) = {
+  def forRotation(q: Quaternion): Matrix4x4 = {
     val Quaternion(x, y, z, w) = q
     val x2 = x + x
     val y2 = y + y
