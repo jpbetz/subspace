@@ -1,6 +1,6 @@
 package com.github.jpbetz.subspace
 
-object Floats {
+private[subspace] object Floats {
   def clamp(value: Float, min: Float, max: Float): Float = {
     scala.math.min(scala.math.max(value, min), max)
   }

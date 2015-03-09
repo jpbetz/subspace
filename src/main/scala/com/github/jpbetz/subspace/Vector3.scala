@@ -88,10 +88,6 @@ case class Vector3(x: Float, y: Float, z: Float) extends Bufferable {
     )
   }
 
-  def rotate(axis: Vector3, angle: Float): Vector3 = {
-    rotate(Quaternion.fromAxisAngle(axis, angle))
-  }
-
   def rotate(q: Quaternion): Vector3 = {
     val ix =  q.w * x + q.y * z - q.z * y
     val iy =  q.w * y + q.z * x - q.x * z
@@ -137,10 +133,6 @@ case class Vector3(x: Float, y: Float, z: Float) extends Bufferable {
   // TODO: Rotates a vector current towards target.
   //This function is similar to MoveTowards except that the vector is treated as a direction rather than a position. The current vector will be rotated round toward the target direction by an angle of maxRadiansDelta, although it will land exactly on the target rather than overshoot. If the magnitudes of current and target are different then the magnitude of the result will be linearly interpolated during the rotation. If a negative value is used for maxRadiansDelta, the vector will rotate away from target/ until it is pointing in exactly the opposite direction, then stop.
   def rotateTowards(target: Vector3, maxRadiansDelta: Float, maxMagnitudeDelta: Float): Vector3 = ???
-
-  def copy(): Vector3 = {
-    Vector3(this.x, this.y, this.z)
-  }
 
   override def toString: String = {
     s"($x, $y, $z)"

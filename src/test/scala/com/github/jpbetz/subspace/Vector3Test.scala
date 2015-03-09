@@ -3,9 +3,7 @@ package com.github.jpbetz.subspace
 import org.testng.Assert._
 import org.testng.annotations.Test
 
-class Vector3Test {
-
-  private val thousandths = 0.001f
+class Vector3Test extends Asserts {
 
   // TODO: How to handle divide by zero?  Scala x/0f results in Infinity.
 
@@ -15,10 +13,10 @@ class Vector3Test {
     assertEquals(Vector3(0, 1, 0).magnitude, 1f)
     assertEquals(Vector3(0, 0, 1).magnitude, 1f)
     assertEquals(Vector3(-1, 0, 0).magnitude, 1f)
-    assertEquals(Vector3(1, 1, 0).magnitude, 1.414f, thousandths)
-    assertEquals(Vector3(1, 0, 1).magnitude, 1.414f, thousandths)
-    assertEquals(Vector3(0, 1, 1).magnitude, 1.414f, thousandths)
-    assertEquals(Vector3(-1, -1, 0).magnitude, 1.414f, thousandths)
+    assertFloat(Vector3(1, 1, 0).magnitude, 1.414f)
+    assertFloat(Vector3(1, 0, 1).magnitude, 1.414f)
+    assertFloat(Vector3(0, 1, 1).magnitude, 1.414f)
+    assertFloat(Vector3(-1, -1, 0).magnitude, 1.414f)
   }
 
   @Test def testNormalize(): Unit = {
@@ -32,13 +30,13 @@ class Vector3Test {
     Seq(Vector3(2, 2, 2), Vector3(-2, -2, -2)) foreach { vec =>
       val normal = vec.normalize
       assertEquals(normal.x, normal.y)
-      assertEquals(normal.magnitude, 1f, thousandths)
+      assertFloat(normal.magnitude, 1f)
     }
   }
 
   @Test def testDotProduct(): Unit = {
-    assertEquals(Vector3(0, 0, 0).dotProduct(Vector3(0, 0, 0)), 0f, thousandths)
-    assertEquals(Vector3(2, 4, 1).dotProduct(Vector3(3, 5, 6)), 32f, thousandths)
+    assertFloat(Vector3(0, 0, 0).dotProduct(Vector3(0, 0, 0)), 0f)
+    assertFloat(Vector3(2, 4, 1).dotProduct(Vector3(3, 5, 6)), 32f)
   }
 
   @Test def testArithmetic(): Unit = {
@@ -61,14 +59,14 @@ class Vector3Test {
   @Test def testDistanceTo(): Unit = {
     assertEquals(Vector3(0, 0, 0).distanceTo(Vector3(0, 0, 0)), 0f)
     assertEquals(Vector3(0, 0, 0).distanceTo(Vector3(1, 0, 0)), 1f)
-    assertEquals(Vector3(0, 0, 0).distanceTo(Vector3(1, 1, 0)), 1.414f, thousandths)
-    assertEquals(Vector3(0, 0, 0).distanceTo(Vector3(1, 0, 1)), 1.414f, thousandths)
-    assertEquals(Vector3(0, 0, 0).distanceTo(Vector3(0, 1, 1)), 1.414f, thousandths)
+    assertFloat(Vector3(0, 0, 0).distanceTo(Vector3(1, 1, 0)), 1.414f)
+    assertFloat(Vector3(0, 0, 0).distanceTo(Vector3(1, 0, 1)), 1.414f)
+    assertFloat(Vector3(0, 0, 0).distanceTo(Vector3(0, 1, 1)), 1.414f)
 
-    assertEquals(Vector3(0, 0, 0).distanceTo(Vector3(1, 1, 1)), 1.732f, thousandths)
+    assertFloat(Vector3(0, 0, 0).distanceTo(Vector3(1, 1, 1)), 1.732f)
 
-    assertEquals(Vector3(-0.5f, -0.5f, -0.5f).distanceTo(Vector3(0.5f, 0.5f, 0.5f)), 1.732f, thousandths)
-    assertEquals(Vector3(-0.5f, 0.5f, 0.5f).distanceTo(Vector3(0.5f, -0.5f, -0.5f)), 1.732f, thousandths)
+    assertFloat(Vector3(-0.5f, -0.5f, -0.5f).distanceTo(Vector3(0.5f, 0.5f, 0.5f)), 1.732f)
+    assertFloat(Vector3(-0.5f, 0.5f, 0.5f).distanceTo(Vector3(0.5f, -0.5f, -0.5f)), 1.732f)
   }
 
   @Test def testClamp(): Unit = {
@@ -89,14 +87,6 @@ class Vector3Test {
     assertEquals(Vector3(-1, -3, -5).lerp(Vector3(1, 3, 5), 1f), Vector3(1, 3, 5))
   }
 
-  @Test def testRotate(): Unit = {
-    assertVectors(Vector3(0, 0, 0).rotate(Vector3(1, 0, 0), scala.math.Pi.toFloat/2), Vector3(0, 0, 0))
-
-    assertVectors(Vector3(1, 0, 0).rotate(Vector3(1, 0, 0), scala.math.Pi.toFloat/2), Vector3(1, 0, 0))
-    assertVectors(Vector3(1, 0, 0).rotate(Vector3(0, 1, 0), scala.math.Pi.toFloat/2), Vector3(0, 0, -1))
-    assertVectors(Vector3(1, 0, 0).rotate(Vector3(0, 0, 1), scala.math.Pi.toFloat/2), Vector3(0, 1, 0))
-  }
-
   @Test def testCopy(): Unit = {
     assertEquals(Vector3(0, 0, 0).copy(), Vector3(0, 0, 0))
     assertEquals(Vector3(1, 2, 3).copy(), Vector3(1, 2, 3))
@@ -112,11 +102,5 @@ class Vector3Test {
     assertEquals(buffer.get(0), -2f)
     assertEquals(buffer.get(1), -20f)
     assertEquals(buffer.get(2), -5f)
-  }
-
-  def assertVectors(v1: Vector3, v2: Vector3) = {
-    assertEquals(v1.x, v2.x, thousandths)
-    assertEquals(v1.y, v2.y, thousandths)
-    assertEquals(v1.z, v2.z, thousandths)
   }
 }

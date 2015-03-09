@@ -8,11 +8,10 @@ For more details, see: http://jpbetz.github.io/subspace/
 Inspired by [glm](http://glm.g-truc.net/0.9.6/index.html), Subspace makes the vector and matrix computations that needs
 to be performed on the CPU a bit easier.  It provides convenience features from shader programming like
 [swizzle operators](https://www.opengl.org/wiki/Data_Type_%28GLSL%29#Swizzling) as well as a comprehensive set of
-operations for graphics programming,  including functions that have been deprecated by OpenGL such as `glRotate` and
-`gluPerspective`.
+operations for graphics programming,  including replacements for functions that have been deprecated by OpenGL.
 
-To minimize it's footprint, this library has no dependencies.  Is intended for use with OpenGL, via bindings such as
-[LWJGL](http://www.lwjgl.org/).
+To minimize it's footprint, this library has no dependencies.  Is intended for use with OpenGL, via JVM bindings such as
+[LWJGL](http://www.lwjgl.org/),  but could be used with any graphics API.
 
 Usage
 -----
@@ -129,6 +128,13 @@ ByteBuffers needed by LWJGL.  E.g.:
 
     val modelViewMatrix = Matrix4x4.forTranslationRotationScale(modelPosition, modelQuaternion, modelScale)
     glUniformMatrix4("modelViewMatrix", false, modelViewMatrix.allocateBuffer)
+
+Questions and Feedback
+----------------------
+
+Please open github issues with any questions or feedback.  Contributions welcome in the form of pull requests for
+issues/features.  Please open an issue explaining a planned change so it can be discussed before coding up and
+submitting a pull request.
 
 Design
 ------

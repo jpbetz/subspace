@@ -15,7 +15,7 @@ class Matrix4x4Test extends Asserts {
     4,5,6,7,
     1,5,3,2)
 
-  private val roll90 = Quaternion.fromAxisAngle(Orientation.z, scala.math.Pi.toFloat/2)
+  private val roll90 = Quaternion.forAxisAngle(Orientation.z, scala.math.Pi.toFloat/2)
 
   @Test def testRotation(): Unit = {
     val rotateMatrix = Matrix4x4.forRotation(roll90)

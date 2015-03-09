@@ -3,12 +3,6 @@ package com.github.jpbetz.subspace
 import java.nio.FloatBuffer
 
 object Matrix4x4 {
-  def apply(column1: Vector4, column2: Vector4, column3: Vector4, column4: Vector4): Matrix4x4 = Matrix4x4(
-    column1.x, column1.y, column1.z, column1.w,
-    column2.x, column2.y, column2.z, column2.w,
-    column3.x, column3.y, column3.z, column3.w,
-    column4.x, column4.y, column4.z, column4.w
-  )
 
   lazy val identity = Matrix4x4(
     1, 0, 0, 0,
@@ -75,7 +69,6 @@ object Matrix4x4 {
   }
 
   def forTranslation(translation: Vector3): Matrix4x4 = {
-    // m[column][row]
     Matrix4x4(
       1, 0, 0, 0,
       0, 1, 0, 0,

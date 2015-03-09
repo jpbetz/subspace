@@ -91,10 +91,6 @@ case class Vector2(x: Float, y: Float) extends Bufferable {
 
   //def rotate(): Vector2 = ???
 
-  def copy(): Vector2 = {
-    Vector2(this.x, this.y)
-  }
-
   override def toString: String = {
     s"($x, $y)"
   }

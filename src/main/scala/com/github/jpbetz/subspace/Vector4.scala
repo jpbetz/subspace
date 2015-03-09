@@ -55,6 +55,9 @@ case class Vector4(
     Vector4(this.x - x, this.y - y, this.z - z, this.w - w)
   }
 
+  def *(f: Float): Vector4 = scale(f)
+  def /(f: Float): Vector4 = scale(1/f)
+
   def scale(f: Float): Vector4 = scale(f, f, f, f)
   def scale(vec: Vector4): Vector4 = scale(vec.x, vec.y, vec.z, vec.w)
   def scale(x: Float, y: Float, z: Float, w: Float): Vector4 = {
@@ -97,15 +100,11 @@ case class Vector4(
     )
   }
 
-  def copy(): Vector4 = {
-    Vector4(this.x, this.y, this.z, this.w)
-  }
-
   override def toString: String = {
     s"($x, $y, $z, $w)"
   }
 
-  // fizzle my swizzle
+  // swizzle operators
   def xx = Vector2(x, x)
   def xy = Vector2(x, y)
   def xz = Vector2(x, z)
