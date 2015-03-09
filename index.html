@@ -1,89 +1,212 @@
 <!DOCTYPE html>
 <html>
-
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Subspace : Lightweight vector and matrix math library for OpenGL programming in Scala.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 
-    <title>Subspace</title>
+    <title>Subspace by jpbetz</title>
   </head>
 
   <body>
+    <header>
+      <div class="inner">
+        <h1>Subspace</h1>
+        <h2>Lightweight vector and matrix math library for OpenGL programming in Scala.</h2>
+        <a href="https://github.com/jpbetz/subspace" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/jpbetz/subspace">View on GitHub</a>
-
-          <h1 id="project_title">Subspace</h1>
-          <h2 id="project_tagline">Lightweight vector and matrix math library for OpenGL programming in Scala.</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/jpbetz/subspace/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/jpbetz/subspace/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h1>
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
 <a id="subspace" class="anchor" href="#subspace" aria-hidden="true"><span class="octicon octicon-link"></span></a>Subspace</h1>
 
 <p>Lightweight vector and matrix math library for OpenGL programming in Scala.</p>
 
-<p>Inspired by <a href="http://glm.g-truc.net/0.9.6/index.html">glm</a> Subspace makes the vector and matrix computations that needs
-to be performed on the CPU a bit easier by providing features that graphics programmers are familiar with from shader
-programming (like swizzle operators) as well as a complete set of functions for graphics programming,  including
-functions that have been deprecated by OpenGL such as <code>glRotate</code>, <code>gluPerspective</code> and <code>gluLookAt</code>.</p>
+<p>For more details, see: <a href="http://jpbetz.github.io/subspace/">http://jpbetz.github.io/subspace/</a></p>
 
-<p>This contains core classes such as Vector3, Matrix4x4 and Quaternion.  It also
-provides <a href="https://www.opengl.org/wiki/Data_Type_%28GLSL%29#Swizzling">swizzling</a> and
-<a href="https://www.opengl.org/wiki/Data_Type_%28GLSL%29#Vector_constructors">convenience constructors</a>.</p>
+<p>Inspired by <a href="http://glm.g-truc.net/0.9.6/index.html">glm</a>, Subspace makes the vector and matrix computations that needs
+to be performed on the CPU a bit easier.  It provides convenience features from shader programming like
+<a href="https://www.opengl.org/wiki/Data_Type_%28GLSL%29#Swizzling">swizzle operators</a> as well as a comprehensive set of
+operations for graphics programming,  including replacements for functions that have been deprecated by OpenGL.</p>
 
-<p>To minimize it's footprint, this library has no dependencies.  Is intended for use with OpenGL, via bindings such as
-LWJGL.</p>
+<p>To minimize it's footprint, this library has no dependencies.  Is intended for use with OpenGL, via JVM bindings such as
+<a href="http://www.lwjgl.org/">LWJGL</a>,  but could be used with any graphics API.</p>
 
 <h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
 
-<p>Vector classes:</p>
+<h3>
+<a id="vectors" class="anchor" href="#vectors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Vectors</h3>
 
-<div class="highlight highlight-scala"><pre><span class="pl-k">val</span> <span class="pl-en">modelPosition</span> <span class="pl-k">=</span> <span class="pl-en">Vector3</span>(<span class="pl-c1">0</span>, <span class="pl-c1">0</span>, <span class="pl-c1">1</span>)
-modelPosition.rotate(<span class="pl-en">Orientation</span>.y, scala.math.<span class="pl-en">Pi</span>.toFloat<span class="pl-k">/</span><span class="pl-c1">2</span>)</pre></div>
+<p>All vector classes are case classes with companion objects that provide additional functions and constructors.</p>
 
-<p>Matrix classes:</p>
+<div class="highlight highlight-scala"><pre><span class="pl-k">val</span> <span class="pl-en">position</span> <span class="pl-k">=</span> <span class="pl-en">Vector3</span>(<span class="pl-c1">0</span>, <span class="pl-c1">0</span>, <span class="pl-c1">1</span>)
+<span class="pl-k">val</span> <span class="pl-en">origin</span> <span class="pl-k">=</span> <span class="pl-en">Vector3</span>.fill(<span class="pl-c1">0</span>)</pre></div>
 
-<div class="highlight highlight-scala"><pre><span class="pl-k">val</span> <span class="pl-en">perspectiveMatrix</span> <span class="pl-k">=</span> <span class="pl-en">Matrix4x4</span>.forPerspective(scala.math.<span class="pl-en">Pi</span>.toFloat<span class="pl-k">/</span><span class="pl-c1">2f</span>, <span class="pl-c1">1f</span>, <span class="pl-c1">1f</span>, zNear, zFar)
+<p>Mathematical operators can be used for operations that make sense mathematically, e.g.:</p>
+
+<div class="highlight highlight-scala"><pre><span class="pl-k">val</span> <span class="pl-en">v1</span> <span class="pl-k">=</span> <span class="pl-en">Vector3</span>(<span class="pl-c1">3.2f</span>, <span class="pl-c1">1.5f</span>, <span class="pl-c1">0</span>)
+<span class="pl-k">val</span> <span class="pl-en">v2</span> <span class="pl-k">=</span> <span class="pl-en">Vector3</span>(<span class="pl-c1">5</span>, <span class="pl-c1">0.5f</span>, <span class="pl-c1">0</span>)
+<span class="pl-k">val</span> <span class="pl-en">v3</span> <span class="pl-k">=</span> <span class="pl-k">-</span>(v1<span class="pl-k">/</span><span class="pl-c1">3f</span> <span class="pl-k">+</span> v2)</pre></div>
+
+<p>And all mathematical operators have an equivalent method.  E.g. <code>v1 + v2</code> can also be written as <code>v1.add(v2)</code>.</p>
+
+<p>Where mathematical operators cannot be overloaded in a clear and unambiguous way, the operator is not
+overloaded.  For example,  to multiply a vector with a scalar use: <code>vec3 * 3.0f</code>,  but to compute the product of two
+vectors,  <code>*</code> is not available.  Instead, use <code>v1.dotProduct(v2)</code>, <code>v1.crossProduct(v2)</code> or <code>v1.scale(v2)</code>
+(for component-wise multiplication).</p>
+
+<p>Vector classes also contain a variety of convenience methods, e.g.:</p>
+
+<ul>
+<li><code>v1.distanceTo(v2)</code></li>
+<li><code>v1.lerp(v2, 0.5f)</code></li>
+<li><code>v1.clamp(min, max)</code></li>
+</ul>
+
+<h3>
+<a id="matrices" class="anchor" href="#matrices" aria-hidden="true"><span class="octicon octicon-link"></span></a>Matrices</h3>
+
+<p>Matrices are usually constructed using the convenience methods on the companion object.</p>
+
+<div class="highlight highlight-scala"><pre><span class="pl-k">val</span> <span class="pl-en">perspectiveMatrix</span> <span class="pl-k">=</span> <span class="pl-en">Matrix4x4</span>.forPerspective(scala.math.<span class="pl-en">Pi</span>.toFloat<span class="pl-k">/</span><span class="pl-c1">3f</span>, <span class="pl-c1">1f</span>, <span class="pl-c1">1f</span>, <span class="pl-c1">0.001f</span>, <span class="pl-c1">1000f</span>)
+<span class="pl-k">val</span> <span class="pl-en">worldToViewMatrix</span> <span class="pl-k">=</span> <span class="pl-en">Matrix4x4</span>.forRotation(cameraRotation)</pre></div>
+
+<p>Matrices can be combined using matrix multiplication.</p>
+
+<div class="highlight highlight-scala"><pre><span class="pl-k">val</span> <span class="pl-en">modelToWorldMatrix</span> <span class="pl-k">=</span> <span class="pl-en">Matrix4x4</span>.forTranslation(modelPosition) <span class="pl-k">*</span> <span class="pl-en">Matrix4x4</span>.forRotation(modelRotation)
+<span class="pl-k">val</span> <span class="pl-en">modelViewMatrix</span> <span class="pl-k">=</span> modelToWorldMatrix <span class="pl-k">*</span> worldToViewMatrix</pre></div>
+
+<p>Matrices also have convenience methods for common graphics operations:</p>
+
+<div class="highlight highlight-scala"><pre><span class="pl-k">val</span> <span class="pl-en">normalViewMatrix</span> <span class="pl-k">=</span> modelViewMatrix.normalMatrix <span class="pl-c">// same as modelViewMatrix.inverse.transpose</span></pre></div>
+
+<h3>
+<a id="rotations" class="anchor" href="#rotations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Rotations</h3>
+
+<p>Rotations can be managed using any of the following:</p>
+
+<ul>
+<li>Axis angle</li>
+<li>Euler angles</li>
+<li>Quaternions</li>
+</ul>
+
+<p>Internally,  Quaternions are used to handle all rotations.  But Quaternions can be constructed from an axis angle or
+Euler angles.</p>
+
+<p>For example, to create a transformation matrix from an axis angle:</p>
+
+<div class="highlight highlight-scala"><pre><span class="pl-en">Matrix4x4</span>.forRotation(<span class="pl-en">Quaternion</span>.forAxisAngle(<span class="pl-en">Orientation</span>.x, scala.math.<span class="pl-en">Pi</span>.toFloat<span class="pl-k">/</span><span class="pl-c1">4</span>))</pre></div>
+
+<p>And to create one from Euler angles:</p>
+
+<div class="highlight highlight-scala"><pre><span class="pl-en">Matrix4x4</span>.forRotation(<span class="pl-en">Quaternion</span>.forEuler(<span class="pl-en">Vector3</span>(scala.math.<span class="pl-en">Pi</span>.toFloat<span class="pl-k">/</span><span class="pl-c1">2</span>, <span class="pl-c1">0</span>, <span class="pl-c1">0</span>)))</pre></div>
+
+<p>All angles are in radians.</p>
+
+<h3>
+<a id="swizzle-operators" class="anchor" href="#swizzle-operators" aria-hidden="true"><span class="octicon octicon-link"></span></a>Swizzle operators</h3>
+
+<p>Swizzle operators allow a new vector to be created from an existing vector by specifying the dimensions from the existing
+vector to use to create the new vector.  Dimensions can be specified in any order and can be repeated.  If few dimensions
+are specified, a lower dimension vector is created.</p>
+
+<table>
+<thead>
+<tr>
+<th>Swizzle Operator</th>
+<th>Equivalent code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vec3.zxy</code></td>
+<td><code>Vector3(vec3.z, vec3.y, vec3.z)</code></td>
+</tr>
+<tr>
+<td><code>vec4.xz</code></td>
+<td><code>Vector2(vec4.x, vec4.z)</code></td>
+</tr>
+<tr>
+<td><code>vec4.yyy</code></td>
+<td><code>Vector3(vec4.y, vec4.y, vec4.y)</code></td>
+</tr>
+</tbody>
+</table>
+
+<p>Vectors can be constructed from other vectors.  Similar to GLSL constructors:</p>
+
+<table>
+<thead>
+<tr>
+<th>Convenience Constructors</th>
+<th>Equivalent code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Vector4(vec3, 1)</code></td>
+<td><code>Vector4(vec3.x, vec3.y, vec3.z, 1)</code></td>
+</tr>
+<tr>
+<td><code>Vector4(1, vec2, 1)</code></td>
+<td><code>Vector4(1, vec2.x, vec2.y, 1)</code></td>
+</tr>
+</tbody>
+</table>
+
+<p>Constructors and swizzle operators can be used together to reshape and resize vectors:</p>
+
+<table>
+<thead>
+<tr>
+<th>Swizzle Operators + Constructors</th>
+<th>Equivalent code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Vector4(0, vec2.yx, 1)</code></td>
+<td><code>Vector4(0, vec2.y, vec2.x, 1)</code></td>
+</tr>
+<tr>
+<td><code>Vector4(vec3.zxy, 1)</code></td>
+<td><code>Vector4(vec3.z, vec3.y, vec3.x, 1)</code></td>
+</tr>
+</tbody>
+</table>
+
+<h3>
+<a id="bytebuffers" class="anchor" href="#bytebuffers" aria-hidden="true"><span class="octicon octicon-link"></span></a>ByteBuffers</h3>
+
+<p>Integrating with graphics API bindings for the JVM, such as LWJGL, may require allocating byte buffers for vectors
+and matrices.  Usually so they can be passed to shaders as uniforms.</p>
+
+<p>To allocate a new byte buffer:</p>
+
+<div class="highlight highlight-scala"><pre><span class="pl-k">val</span> <span class="pl-en">cameraPosition</span> <span class="pl-k">=</span> <span class="pl-en">Vector3</span>(<span class="pl-c1">10</span>, <span class="pl-c1">10</span>, <span class="pl-c1">5</span>)
 ...
-<span class="pl-k">val</span> <span class="pl-en">worldToViewMatrix</span> <span class="pl-k">=</span> <span class="pl-en">Matrix4x4</span>.forRotation(cameraRotation)
-<span class="pl-k">val</span> <span class="pl-en">modelToWorldMatrix</span> <span class="pl-k">=</span> <span class="pl-en">Matrix4x4</span>.forTranslation(modelPosition)
-...
-<span class="pl-k">val</span> <span class="pl-en">modelViewMatrix</span> <span class="pl-k">=</span> modelToWorldMatrix <span class="pl-k">*</span> worldToViewMatrix
-<span class="pl-k">val</span> <span class="pl-en">normalViewMatrix</span> <span class="pl-k">=</span> modelViewMatrix.normalMatrix</pre></div>
+<span class="pl-k">val</span> <span class="pl-en">cameraPositionBuffer</span> <span class="pl-k">=</span> cameraPosition.allocateBuffer</pre></div>
 
-<p>Quaternion:</p>
+<p>To update an existing byte buffer:</p>
 
-<div class="highlight highlight-scala"><pre><span class="pl-k">val</span> <span class="pl-en">quat</span> <span class="pl-k">=</span> <span class="pl-en">Quaternion</span>.fromAxisAngle(<span class="pl-en">Orientation</span>.x, scala.math.<span class="pl-en">Pi</span>.toFloat<span class="pl-k">/</span><span class="pl-c1">4</span>)
-<span class="pl-en">Matrix4x4</span>.forRotation(quat) <span class="pl-k">*</span> <span class="pl-en">Vector3</span>(<span class="pl-c1">1</span>, <span class="pl-c1">1</span>, <span class="pl-c1">1</span>)
-<span class="pl-en">Vector3</span>(<span class="pl-c1">1</span>, <span class="pl-c1">1</span>, <span class="pl-c1">1</span>).rotate(quat)</pre></div>
+<div class="highlight highlight-scala"><pre>cameraPosition.updateBuffer(cameraPositionBuffer)</pre></div>
 
-<p>Swizzle operators and vector convenience constructors work the same as in GLSL.  E.g.:</p>
+<p>To read from a byte buffer:</p>
 
-<div class="highlight highlight-scala"><pre><span class="pl-en">Vector4</span>(<span class="pl-c1">0</span>, vec2.yx, <span class="pl-c1">0</span>) <span class="pl-c">// == Vector4(0, vec2.y, vec2.x, 0)</span>
-vec4.xz <span class="pl-c">// == Vector2(vec4.x, vec4.z)</span></pre></div>
-
-<p>Implementations of functions deprecated from OpenGL:</p>
-
-<div class="highlight highlight-scala"><pre><span class="pl-k">val</span> <span class="pl-en">perspectiveMatrix</span> <span class="pl-k">=</span> <span class="pl-en">Matrix4x4</span>.forPerspective(...)</pre></div>
-
-<p>ByteBuffer writers to ease integration with low level OpenGL APIs for the JVM such as LWJGL</p>
-
-<div class="highlight highlight-scala"><pre><span class="pl-k">val</span> <span class="pl-en">cameraPosition</span> <span class="pl-k">=</span> <span class="pl-en">Vector4</span>(<span class="pl-c1">10</span>, <span class="pl-c1">10</span>, <span class="pl-c1">5</span>, <span class="pl-c1">0</span>).allocateBuffer()</pre></div>
+<div class="highlight highlight-scala"><pre><span class="pl-en">Matrix4x4</span>.fromBuffer(transformBuffer)</pre></div>
 
 <h2>
 <a id="opengl-programming-in-scala" class="anchor" href="#opengl-programming-in-scala" aria-hidden="true"><span class="octicon octicon-link"></span></a>OpenGL Programming in Scala</h2>
@@ -96,9 +219,29 @@ and matrix classes, it is rather incomplete.  And in LWJGL 3, they are removing 
 <p>To use this library with LWJGL,  simply build whatever types are needed and then use the toBuffer methods to produce the
 ByteBuffers needed by LWJGL.  E.g.:</p>
 
-<pre><code>val modelViewMatrix = Matrix4x4.forTranslationRotationScale(...)
-glUniformMatrix4("modelViewMatrix", false, modelViewMatrix.toBuffer)
-</code></pre>
+<div class="highlight highlight-scala"><pre><span class="pl-k">val</span> <span class="pl-en">modelViewMatrixBuffer</span> <span class="pl-k">=</span> <span class="pl-en">Matrix4x4</span>.allocateEmptyBuffer
+...
+<span class="pl-k">val</span> <span class="pl-en">modelViewMatrix</span> <span class="pl-k">=</span> <span class="pl-en">Matrix4x4</span>.forTranslationRotationScale(modelPosition, modelQuaternion, modelScale)
+modelViewMatrix.updateBuffer(modelViewMatrixBuffer)
+...
+glUniformMatrix4(modelViewMatrixUniform, <span class="pl-c1">false</span>, modelViewMatrixBuffer)</pre></div>
+
+<p>Buffers can also be allocated from existing objects, e.g.:</p>
+
+<div class="highlight highlight-scala"><pre><span class="pl-k">val</span> <span class="pl-en">perspectiveMatrixBuffer</span> <span class="pl-k">=</span> perspectiveMatrix.allocateBuffer
+...
+glUniformMatrix4(perspectiveMatrixUniform, <span class="pl-c1">false</span>, perspectiveMatrixBuffer)</pre></div>
+
+<p>And buffers can be read using companion objects, e.g.:</p>
+
+<div class="highlight highlight-scala"><pre><span class="pl-k">val</span> <span class="pl-en">position</span> <span class="pl-k">=</span> <span class="pl-en">Vector3</span>.fromBuffer(byteBuffer)</pre></div>
+
+<h2>
+<a id="questions-and-feedback" class="anchor" href="#questions-and-feedback" aria-hidden="true"><span class="octicon octicon-link"></span></a>Questions and Feedback</h2>
+
+<p>Please open github issues with any questions or feedback.  Contributions welcome in the form of pull requests for
+issues/features.  Please open an issue explaining a planned change so it can be discussed before coding up and
+submitting a pull request.</p>
 
 <h2>
 <a id="design" class="anchor" href="#design" aria-hidden="true"><span class="octicon octicon-link"></span></a>Design</h2>
@@ -106,9 +249,8 @@ glUniformMatrix4("modelViewMatrix", false, modelViewMatrix.toBuffer)
 <p>Goals:</p>
 
 <ul>
-<li>Be good at one thing.  Provide the vector and matrix types needed to program modern against a modern graphics pipeline, and nothing else.</li>
-<li>Provide the best features from the vector and matrix types in shader languages like GLSL.</li>
-<li>Consistent and complete.  Similar libraries for other languages have been studied to make sure all the convenience operations developers expect have been included.</li>
+<li>Be good at one thing.  Provide the vector and matrix types and operations to drive a GPU from the CPU, and nothing else.</li>
+<li>Consistent and complete.  Shaders and libraries for other languages have been studied to make sure all the convenience operations developers expect have been included.</li>
 <li>Scala idomatic. Immutable case classes for all vector and matrix types. Carefully defined operator overloading for natural looking mathematical expressions.</li>
 <li>Minimal footprint.  No dependencies.</li>
 </ul>
@@ -125,20 +267,21 @@ glUniformMatrix4("modelViewMatrix", false, modelViewMatrix.toBuffer)
 <a id="current-limitations" class="anchor" href="#current-limitations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Current Limitations</h2>
 
 <ul>
-<li>All types are currently reference types.  This has negative performance implications.  While scala does allow
+<li>All types are currently reference types.  This may have negative performance implications.  While scala does allow
 stack allocated value types to be defined by extending AnyVal,  AnyVal can only be used for single field types, not
-multi field types like Vector2.  It is not clear if Scala will ever support stack allocated value types that could
-be used for my purposes.   Maybe if/when <a href="http://cr.openjdk.java.net/%7Ejrose/values/values-0.html">Java adds value types</a>,
-scala will provide a way to stack allocate these types.</li>
+multi field types like Vector2.
+Maybe if/when <a href="http://cr.openjdk.java.net/%7Ejrose/values/values-0.html">Java adds value types</a>,
+scala will provide a way to stack allocate these types?</li>
 </ul>
 
 <h2>
 <a id="todo" class="anchor" href="#todo" aria-hidden="true"><span class="octicon octicon-link"></span></a>TODO</h2>
 
 <ul>
-<li>[ ] Finish up test suite</li>
-<li>[ ] Implement projection/reflection convenience methods on Vector3</li>
+<li>[ ] Publish to maven central</li>
 <li>[ ] Flesh out scaladoc</li>
+<li>[ ] Integrate with scala collection types (Product, Seq, ??)</li>
+<li>[ ] Implement projection/reflection convenience methods on Vector3</li>
 <li>[ ] Add Color and UV coordinate related conveniences.  Might be as simple as adding swizzle operators (rgba, stpq) to Vector3 and Vector4.</li>
 </ul>
 
@@ -147,24 +290,32 @@ scala will provide a way to stack allocate these types.</li>
 
 <ul>
 <li><a href="http://glm.g-truc.net/0.9.6/index.html">http://glm.g-truc.net/0.9.6/index.html</a></li>
+<li><a href="https://www.opengl.org/wiki/Data_Type_%28GLSL%29#Swizzling">https://www.opengl.org/wiki/Data_Type_%28GLSL%29#Swizzling</a></li>
 <li><a href="https://github.com/ra4king/LWJGL-OpenGL-Utils/tree/master/src/com/ra4king/opengl/util/math">https://github.com/ra4king/LWJGL-OpenGL-Utils/tree/master/src/com/ra4king/opengl/util/math</a></li>
 <li><a href="http://developer.android.com/reference/android/opengl/Matrix.html">http://developer.android.com/reference/android/opengl/Matrix.html</a></li>
 <li><a href="http://docs.unity3d.com/ScriptReference/index.html">http://docs.unity3d.com/ScriptReference/index.html</a></li>
 <li><a href="https://github.com/mrdoob/three.js/tree/master/src/math">https://github.com/mrdoob/three.js/tree/master/src/math</a></li>
 <li><a href="http://cr.openjdk.java.net/%7Ejrose/values/values-0.html">http://cr.openjdk.java.net/~jrose/values/values-0.html</a></li>
 </ul>
-      </section>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/jpbetz/subspace/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/jpbetz/subspace/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/jpbetz/subspace"></a> is maintained by <a href="https://github.com/jpbetz">jpbetz</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
     </div>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Subspace maintained by <a href="https://github.com/jpbetz">jpbetz</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-    
-
+  
   </body>
 </html>
