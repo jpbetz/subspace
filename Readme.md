@@ -5,14 +5,16 @@ Lightweight vector and matrix math library for OpenGL programming in Scala.
 
 For more details, see: http://jpbetz.github.io/subspace/
 
-Inspired by [glm](http://glm.g-truc.net/0.9.6/index.html), Subspace handles the vector and matrix computations that needs
+Inspired by [glm](http://glm.g-truc.net/0.9.6/index.html), Subspace handles the vector and matrix computations that need
 to be performed on the CPU.  It provides convenience features from shader programming like
 [swizzle operators](https://www.opengl.org/wiki/Data_Type_%28GLSL%29#Swizzling) as well as a comprehensive set of
-operations for graphics programming,  including replacements for functions that have been deprecated by OpenGL such
+operations for graphics programming,  including replacements for operations that have been deprecated by OpenGL such
 as building a perspective transformation matrix.
 
-To minimize it's footprint, this library has no dependencies.  Is intended for use with OpenGL, via JVM bindings such as
-[LWJGL](http://www.lwjgl.org/),  but could be used with any graphics API.
+Is intended for use with OpenGL, via JVM bindings such as [LWJGL](http://www.lwjgl.org/),  but could be used with any
+graphics API.
+
+To minimize it's footprint, this library has no dependencies.
 
 Usage
 -----
@@ -227,7 +229,6 @@ Current Limitations
 TODO
 ----
 
-* [ ] Publish to maven central
 * [ ] Flesh out scaladoc
 * [ ] Integrate with scala collection types (Product, Seq, ??)
 * [ ] Implement projection/reflection convenience methods on Vector3
