@@ -11,7 +11,8 @@ subprojects {
     apply plugin: 'signing'
     apply plugin: 'java'
 
-    project.group = "com.github.jpbetz"
+    project.group = 'com.github.jpbetz'
+    archivesBaseName = "subspace"
 
 
     repositories {
@@ -34,6 +35,7 @@ subprojects {
     }
 
     signing {
+        required { gradle.taskGraph.hasTask("uploadArchives") }
         sign configurations.archives
     }
 
@@ -51,8 +53,8 @@ subprojects {
                 }
 
                 pom.project {
+                    name 'subspace'
                     packaging 'jar'
-                    // optionally artifactId can be defined here
                     description 'Lightweight vector and matrix math library for OpenGL programming in Scala.'
                     url 'http://jpbetz.github.io/subspace/'
 

@@ -5,16 +5,29 @@ Lightweight vector and matrix math library for OpenGL programming in Scala.
 
 For more details, see: http://jpbetz.github.io/subspace/
 
-Inspired by [glm](http://glm.g-truc.net/0.9.6/index.html), Subspace makes the vector and matrix computations that needs
-to be performed on the CPU a bit easier.  It provides convenience features from shader programming like
+Inspired by [glm](http://glm.g-truc.net/0.9.6/index.html), Subspace handles the vector and matrix computations that needs
+to be performed on the CPU.  It provides convenience features from shader programming like
 [swizzle operators](https://www.opengl.org/wiki/Data_Type_%28GLSL%29#Swizzling) as well as a comprehensive set of
-operations for graphics programming,  including replacements for functions that have been deprecated by OpenGL.
+operations for graphics programming,  including replacements for functions that have been deprecated by OpenGL such
+as building a perspective transformation matrix.
 
 To minimize it's footprint, this library has no dependencies.  Is intended for use with OpenGL, via JVM bindings such as
 [LWJGL](http://www.lwjgl.org/),  but could be used with any graphics API.
 
 Usage
 -----
+
+To get started,  just add subspace as a dependency to your scala project.
+
+Scala SBT:
+```
+libraryDependencies += "com.github.jpbetz" % "subspace" % "0.1.0"
+```
+
+Gradle:
+```
+compile 'com.github.jpbetz:subspace:0.1.0'
+```
 
 ### Vectors
 
@@ -70,28 +83,28 @@ val normalViewMatrix = modelViewMatrix.normalMatrix // same as modelViewMatrix.i
 
 ### Rotations
 
-Rotations can be managed using any of the following:
+Rotations assume a left hand oriented coordinate system (same as OpenGL) and all angles are in radians.
 
-* Axis angle
-* Euler angles
-* Quaternions
+Rotations can be represented using any of the following:
 
-Internally,  Quaternions are used to handle all rotations.  But Quaternions can be constructed from an axis angle or
-Euler angles.
+* [Euler angle representation](http://en.wikipedia.org/wiki/Euler_angles)
+* [Axis and angle representation](http://en.wikipedia.org/wiki/Axis%E2%80%93angle_representation)
+* [Quaternion representation](http://en.wikipedia.org/wiki/Quaternion)
 
-For example, to create a transformation matrix from an axis angle:
+Internally,  Quaternions are used to handle all rotations.  But Quaternions can easily be constructed from an axis angle
+or Euler angles.
 
-```scala
-Matrix4x4.forRotation(Quaternion.forAxisAngle(Orientation.x, scala.math.Pi.toFloat/4))
-```
-
-And to create one from Euler angles:
+Euler angle example:
 
 ```scala
 Matrix4x4.forRotation(Quaternion.forEuler(Vector3(scala.math.Pi.toFloat/2, 0, 0)))
 ```
 
-All angles are in radians.
+Axis angle example:
+
+```scala
+Matrix4x4.forRotation(Quaternion.forAxisAngle(Orientation.x, scala.math.Pi.toFloat/4))
+```
 
 ### Swizzle operators
 
