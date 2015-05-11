@@ -5,11 +5,11 @@ Lightweight vector and matrix math library for OpenGL programming in Scala.
 
 For more details, see: http://jpbetz.github.io/subspace/
 
-Inspired by [glm](http://glm.g-truc.net/0.9.6/index.html), Subspace handles the vector and matrix computations that need
-to be performed on the CPU.  It provides convenience features from shader programming like
-[swizzle operators](https://www.opengl.org/wiki/Data_Type_%28GLSL%29#Swizzling) as well as a comprehensive set of
-operations for graphics programming,  including replacements for operations that have been deprecated by OpenGL such
-as building a perspective transformation matrix.
+Inspired by [glm](http://glm.g-truc.net/0.9.6/index.html), Subspace handles the graphics programming vector and
+matrix computations that often need to be performed on the CPU.  It provides convenience features inspired by shader
+programming language like [swizzle operators](https://www.opengl.org/wiki/Data_Type_%28GLSL%29#Swizzling) as well as
+a comprehensive set of core operations,  including replacements for operations that have been deprecated by OpenGL
+such as a convenient routine for building a perspective transformation matrix.
 
 Is intended for use with OpenGL, via JVM bindings such as [LWJGL](http://www.lwjgl.org/),  but could be used with any
 graphics API.
@@ -114,24 +114,24 @@ Swizzle operators allow a new vector to be created from an existing vector by sp
 vector to use to create the new vector.  Dimensions can be specified in any order and can be repeated.  If few dimensions
 are specified, a lower dimension vector is created.
 
-Swizzle Operator | Equivalent code
------------------|----------------
+Swizzle Operator | Equivalent Longform
+-----------------|--------------------
 `vec3.zxy`       | `Vector3(vec3.z, vec3.y, vec3.z)`
 `vec4.xz`        | `Vector2(vec4.x, vec4.z)`
 `vec4.yyy`       | `Vector3(vec4.y, vec4.y, vec4.y)`
 
 Vectors can be constructed from other vectors.  Similar to GLSL constructors:
 
-Convenience Constructors | Equivalent code
--------------------------|----------------
+Convenience Constructors | Equivalent Longform
+-------------------------|--------------------
 `Vector4(vec3, 1)`       | `Vector4(vec3.x, vec3.y, vec3.z, 1)`
 `Vector4(1, vec2, 1)`    | `Vector4(1, vec2.x, vec2.y, 1)`
 
 
 Constructors and swizzle operators can be used together to reshape and resize vectors:
 
-Swizzle Operators + Constructors | Equivalent code
----------------------------------|----------------
+Swizzle Operators + Constructors | Equivalent Longform
+---------------------------------|--------------------
 `Vector4(0, vec2.yx, 1)`         | `Vector4(0, vec2.y, vec2.x, 1)`
 `Vector4(vec3.zxy, 1)`           | `Vector4(vec3.z, vec3.y, vec3.x, 1)`
 
@@ -238,6 +238,8 @@ References
 ----------
 
 * http://glm.g-truc.net/0.9.6/index.html
+* https://github.com/RGreenlees/Java-OpenGL-Math-Library
+* https://github.com/jroyalty/jglm
 * https://www.opengl.org/wiki/Data_Type_%28GLSL%29#Swizzling
 * https://github.com/ra4king/LWJGL-OpenGL-Utils/tree/master/src/com/ra4king/opengl/util/math
 * http://developer.android.com/reference/android/opengl/Matrix.html
