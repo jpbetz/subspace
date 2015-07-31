@@ -33,6 +33,21 @@ object Matrix4x4 {
       0, 0, (far + near) / (near - far), -1,
       0, 0, (2 * far * near) / (near - far), 0)
   }
+  
+  /**
+   * Build a look-at view transformation matrix.
+   */
+  def forLookAt(eye: Vector3, center: Vector3, up: Vector3): Matrix4x4 = {
+    val f = (center - eye).normalize
+    val s = f.crossProduct(up.normalize).normalize
+    val u = s.crossProduct(f)
+
+    Matrix4x4(
+       s.x,  s.y,  s.z, -s.dotProduct(eye),
+       u.x,  u.y,  u.z, -u.dotProduct(eye),
+      -f.x, -f.y, -f.z,  f.dotProduct(eye),
+         0,    0,    0,                  1)
+  }
 
   /**
    * Build an orthographic transformation matrix
